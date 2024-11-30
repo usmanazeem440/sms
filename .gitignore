@@ -1,0 +1,9 @@
+/nbproject/private/
+/nbproject
+/application/config
+/application/cache
+/application/config/config.php
+/application/config/database.php
+/constant
+/system
+.idea

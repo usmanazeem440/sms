@@ -1,0 +1,52 @@
+.d-none {
+	display: none;
+}
+.box_dashboard{
+	display: block;
+    font-size: 15px;
+    margin-top: 38px;
+    white-space: nowrap;
+    margin-left: 19px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dashboard-summery-one:hover {
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .25), 0 10px 10px rgba(0, 0, 0, .22);
+}
+.dashboard-summery-one {
+    min-height: 115px;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    padding: 22px 28px;
+    border-radius: 4px;
+    /*box-shadow: 0px 10px 20px 0px rgba(229, 229, 229, 0.75);*/
+}
+.align-items-center {
+    -ms-flex-align: center !important;
+    align-items: center !important;
+}
+.dashboard-summery-one .item-icon {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    text-align: center;
+}
+.bg-light-green {
+    background-color: #e9eff3;
+    /*background-color: #ffefcb;*/ /*light yellow*/
+}
+.text-green {
+    color: #3cb878;
+}
+.dashboard-summery-one .item-content .item-number {
+    font-size: 20px;
+    font-weight: 500;
+    color: #111111;
+}
+.dashboard-summery-one .item-content .item-title {
+    color: #a8a8a8;
+    margin-bottom: 2px;
+}
