@@ -168,7 +168,9 @@ class Staff extends Admin_Controller {
         if ($month_number >= $startMonth && $month_number <= 12) {
             $year = $centenary . $year_first_substring;
         } else {
-            $year = $centenary . $year_second_substring;
+            // $year = $centenary . $year_second_substring;
+            $year = $centenary . $year_first_substring;
+
         }
 
         $j = 0;
@@ -326,6 +328,7 @@ class Staff extends Admin_Controller {
             $data["countAttendance"] = $countAttendance;
             $data["id"] = $id;
             $data["resultlist"] = $res;
+            // dd($res);
             $data["attendence_array"] = $attendence_array;
             $data["date_array"] = $date_array;
 
@@ -1036,6 +1039,7 @@ class Staff extends Admin_Controller {
 
         // $LeaveTypes = $this->staff_model->getLeaveType();
         $LeaveTypes = $this->leaverequest_model->allotedLeaveType($userdata["id"]);
+        // dd($LeaveTypes);
         $data["staff_id"] = $userdata["id"];
         $data["leavetype"] = $LeaveTypes;
 

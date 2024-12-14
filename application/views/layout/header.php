@@ -188,23 +188,19 @@
 
             <header class="main-header" id="alert">            
 
-                <div style="max-width: 300px;">
-                    <span>
-                        <a href="<?php echo base_url(); ?>admin/admin/dashboard" class="logo" style="height: 68px;width: auto;">                 
+                    <a href="<?php echo base_url(); ?>admin/admin/dashboard" class="logo">                 
 
-                            <span class="logo-mini">S S</span>                 
+                        <span class="logo-mini">S S</span>                 
 
-                            <span class="logo-lg"><img src="<?php echo base_url(); ?>backend/images/s_logo.png" alt="<?php echo $this->customlib->getAppName() ?>" /></span>
+                        <span class="logo-lg"><img src="<?php echo base_url(); ?>backend/images/s_logo.png" alt="<?php echo $this->customlib->getAppName() ?>" /></span>
 
 
-                        </a>   
-                    </span>
-                    <span href="#" class="sidebar-session">
+                    </a>   
+                    <span href="#" class="sidebar-session sidebar-session-lg">
 
                         <?php echo $this->setting_model->getCurrentSchoolName(); ?>
 
                     </span>    
-                </div>      
 
                 <nav class="navbar navbar-static-top" role="navigation">                  
 
@@ -243,11 +239,11 @@
 
                         <?php } ?>
 
-                        <!-- <span href="#" class="sidebar-session">
+                        <span href="#" class="sidebar-session sidebar-session-sm">
 
                             <?php echo $this->setting_model->getCurrentSchoolName(); ?>
 
-                        </span> -->
+                        </span>
 
                     </div>
 

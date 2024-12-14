@@ -406,7 +406,8 @@ class Studentfee extends Admin_Controller {
 
         $data['student_discount_fee'] = $student_discount_fee;
         $data['student_due_fee'] = $student_due_fee;
-        
+        // dd($data);
+
         $category = $this->category_model->get();
         $data['categorylist'] = $category;
         $class_section = $this->student_model->getClassSection($student["class_id"]);
@@ -725,6 +726,7 @@ class Studentfee extends Admin_Controller {
         $this->form_validation->set_rules('amount_discount', 'Discount', 'required|trim|xss_clean');
         $this->form_validation->set_rules('amount_fine', 'Fine', 'required|trim|xss_clean');
         $this->form_validation->set_rules('payment_mode', 'Payment Mode', 'required|trim|xss_clean');
+        // dd($_POST);
         if ($this->form_validation->run() == false) {
             $data = array(
                 'amount' => form_error('amount'),
@@ -769,7 +771,8 @@ class Studentfee extends Admin_Controller {
             $dataReceipts = [
                 "receipt_amount"=> floatval($this->input->post('amount')),
                 "parent_id"=>$parent_id,
-                "status"=>"active"
+                "status"=>"active",
+                "receipt_date"=> date('Y-m-d')
             ];
             $lastInsertId = $this->receipts_model->add_receipts($dataReceipts);
             $dataReceiptsNumber = [
@@ -814,6 +817,7 @@ class Studentfee extends Admin_Controller {
         $data['settinglist'] = $setting_result;
         $feeList = $this->studentfeemaster_model->getDueFeeByFeeSessionGroupFeetype($fee_session_group_id, $fee_master_id, $fee_groups_feetype_id);
         $data['feeList'] = $feeList;
+        // dd($feeList);
         $data["fee_tax"] = $this->setting_model->getFeeTax();
         $data['student_discount_fee'] = $this->feediscount_model->getStudentIndiviualDiscounts($feeList->admission_no);
         $this->load->view('print/printFeesByGroup', $data);

@@ -60,7 +60,8 @@ class Receipts_model extends CI_Model {
         if ($id != null) {
             $this->db->where('receipts.id', $id);
         } 
-            $this->db->order_by('receipts.receipt_date','desc');
+            $this->db->order_by('receipts.id','desc');
+            // $this->db->order_by('receipts.receipt_date','desc');
         
         // $this->db->group_by('students.parent_id');
         if ($getTotal) {

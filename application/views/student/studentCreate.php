@@ -479,38 +479,39 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label><small class="req"> *</small>
-                                                        <input id="guardian_name" name="guardian_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_name'); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_relation'); ?></label>
-                                                        <input id="guardian_relation" name="guardian_relation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_relation'); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_relation'); ?></span>
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label><small class="req"> *</small>
+                                                <input id="guardian_name" name="guardian_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_name'); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label><small class="req"> *</small>
-                                                        <input id="guardian_phone" name="guardian_phone" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_phone'); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_phone'); ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_occupation'); ?></label>
-                                                        <input id="guardian_occupation" name="guardian_occupation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_occupation'); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_occupation'); ?></span>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_relation'); ?></label>
+                                                <input id="guardian_relation" name="guardian_relation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_relation'); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_relation'); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label><small class="req"> *</small>
+                                                <input id="guardian_phone" name="guardian_phone" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_phone'); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_phone'); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_id'); ?><small class="req"> *</small></label>
+                                                <input id="guardian_id" required name="guardian_id" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_id'); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_id'); ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_occupation'); ?></label>
+                                                <input id="guardian_occupation" name="guardian_occupation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_occupation'); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_occupation'); ?></span>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -521,22 +522,6 @@
                                             </div>
 
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="exampleInputFile"><?php echo $this->lang->line('guardian'); ?> <?php echo $this->lang->line('photo'); ?></label>
-                                                <div><input class="filestyle form-control" type='file' name='guardian_pic' id="file" size='20' />
-                                                </div>
-                                                <span class="text-danger"><?php echo form_error('file'); ?></span></div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_id'); ?><small class="req"> *</small></label>
-                                                <input id="guardian_id" required name="guardian_id" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_id'); ?>" />
-                                                <span class="text-danger"><?php echo form_error('guardian_id'); ?></span>
-                                            </div>
-                                        </div>
-
 
                                         <div class="col-md-3">
                                             <div class="form-group">
@@ -544,6 +529,14 @@
                                                 <textarea id="guardian_address" name="guardian_address" placeholder="" class="form-control" rows="2"><?php echo set_value('guardian_address'); ?></textarea>
                                                 <span class="text-danger"><?php echo form_error('guardian_address'); ?></span>
                                             </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputFile"><?php echo $this->lang->line('guardian'); ?> <?php echo $this->lang->line('photo'); ?></label>
+                                                <div><input class="filestyle form-control" type='file' name='guardian_pic' id="file" size='20' />
+                                                </div>
+                                                <span class="text-danger"><?php echo form_error('file'); ?></span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -687,11 +680,11 @@
                                                 </div>
                                             </div>
                                         <?php } ?>
-                                        <div class="tshadow mb25 bozero d-none">
+                                        <div class="tshadow mb25 bozero">
                                             <h4 class="pagetitleh2"><?php echo $this->lang->line('miscellaneous_details'); ?>
                                             </h4>
 
-                                            <div class="row around10">
+                                            <div class="row around10 d-none">
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1"><?php echo $this->lang->line('bank_account_no'); ?></label>
@@ -716,28 +709,28 @@
                                             </div>
 
                                             <div class="row around10">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 d-none">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Medical Insurance Number</label>
                                                         <input id="ifsc_code" name="insurance_number" placeholder="" type="number" class="form-control"  value="<?php echo set_value('insurance_number'); ?>" />
                                                         <span class="text-danger"><?php echo form_error('insurance_number'); ?></span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 d-none">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Insurance Company Name</label>
                                                         <input id="ifsc_code" name="insurance_company_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('insurance_company_name'); ?>" />
                                                         <span class="text-danger"><?php echo form_error('insurance_company_name'); ?></span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 d-none">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Insurance Policy Number</label>
                                                         <input id="ifsc_code" name="insurance_policy_number" placeholder="" type="number" class="form-control"  value="<?php echo set_value('insurance_policy_number'); ?>" />
                                                         <span class="text-danger"><?php echo form_error('insurance_policy_number'); ?></span>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6 d-none">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1">Insurance Contact Number</label>
                                                         <input id="ifsc_code" name="insurance_contact_number" placeholder="" type="number" class="form-control"  value="<?php echo set_value('insurance_contact_number'); ?>" />

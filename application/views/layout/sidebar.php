@@ -538,7 +538,12 @@
                              $this->rbac->hasPrivilege('staff_attendance', 'can_view') ||
                               $this->rbac->hasPrivilege('staff_attendance_report', 'can_view') ||
                                $this->rbac->hasPrivilege('staff_payroll', 'can_view') ||
-                                $this->rbac->hasPrivilege('payroll_report', 'can_view'))) {
+                                $this->rbac->hasPrivilege('payroll_report', 'can_view') || 
+                                $this->rbac->hasPrivilege('apply_leave', 'can_view') || 
+                                $this->rbac->hasPrivilege('leave_types', 'can_view') || 
+                                $this->rbac->hasPrivilege('department', 'can_view') || 
+                                $this->rbac->hasPrivilege('designation', 'can_view') || 
+                                $this->rbac->hasPrivilege('disable_staff', 'can_view'))) {
                                 ?>
                                 <li class="treeview <?php echo set_Topmenu('HR'); ?>">
                                     <a href="#">

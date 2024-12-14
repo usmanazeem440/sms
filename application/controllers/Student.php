@@ -450,6 +450,7 @@ class Student extends Admin_Controller
                 'measurement_date' => date('Y-m-d', $this->customlib->datetostrtotime($this->input->post('measure_date')))
             );
             $insert_id = $this->student_model->add($data);
+            // dd($data);
 
             $data_new = array(
                 'student_id' => $insert_id,
@@ -654,12 +655,9 @@ class Student extends Admin_Controller
 
         $fields = array('admission_no', 'roll_no', 'firstname', 'lastname', 'dob', 'religion', 'birth_place', 'mobileno',
             'email', 'admission_date', 'blood_group', 'mother_tongue', 'address', 'father_name', 'father_phone', 'father_occupation',
-            'mother_name', 'mother_phone', 'mother_occupation', 'guardian_id', 'guardian_name', 'guardian_relation', 'guardian_email',
-            'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'bank_account_no',
-            'bank_name', 'ifsc_code', 'insurance_number', 'previous_school', 'note', 'name_arabic', 'nationality', 'gender', 'city',
-            'iqama_number', 'passport_number', 'iqama_expiry_date', 'passport_expiry_date', 'passport_issued_from', 'student_house',
-            'student_category', 'father_education', 'father_iqama_number', 'father_passport_number', 'father_iqama_expiry', 'father_passport_expiry',
-            'father_passport_issued_from', 'mother_education', 'insurance_company_name', 'insurance_policy_number', 'insurance_contact_number',
+            'mother_name', 'mother_phone', 'mother_occupation','guardian_id', 'guardian_name', 'guardian_relation', 'guardian_email',
+            'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'previous_school', 'note', 'nationality', 'gender', 'city',
+            'category_id', 'father_education', 'mother_education',
             'allergies', 'medicine');
         $data["fields"] = $fields;
         $this->load->view('layout/header');
@@ -677,12 +675,9 @@ class Student extends Admin_Controller
 
         $fields = array('admission_no', 'roll_no', 'firstname', 'lastname', 'dob', 'religion', 'birth_place', 'mobileno',
             'email', 'admission_date', 'blood_group', 'mother_tongue', 'address', 'father_name', 'father_phone', 'father_occupation',
-            'mother_name', 'mother_phone', 'mother_occupation', 'guardian_id', 'guardian_name', 'guardian_relation', 'guardian_email',
-            'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'bank_account_no',
-            'bank_name', 'ifsc_code', 'insurance_number', 'previous_school', 'note', 'name_arabic', 'nationality', 'gender', 'city',
-            'iqama_number', 'passport_number', 'iqama_expiry_date', 'passport_expiry_date', 'passport_issued_from', 'school_house_id',
-            'category_id', 'father_education', 'father_iqama_number', 'father_passport_number', 'father_iqama_expiry', 'father_passport_expiry',
-            'father_passport_issued_from', 'mother_education', 'insurance_company_name', 'insurance_policy_number', 'insurance_contact_number',
+            'mother_name', 'mother_phone', 'mother_occupation','guardian_id', 'guardian_name', 'guardian_relation', 'guardian_email',
+            'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'previous_school', 'note', 'nationality', 'gender', 'city',
+            'category_id', 'father_education', 'mother_education',
             'allergies', 'medicine');
 
         $data["fields"] = $fields;
@@ -840,11 +835,8 @@ return $this->bulkUpdate();
         $fields = array('admission_no', 'roll_no', 'firstname', 'lastname', 'dob', 'religion', 'birth_place', 'mobileno',
             'email', 'admission_date', 'blood_group', 'mother_tongue', 'address', 'father_name', 'father_phone', 'father_occupation',
             'mother_name', 'mother_phone', 'mother_occupation','guardian_id', 'guardian_name', 'guardian_relation', 'guardian_email',
-            'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'bank_account_no',
-            'bank_name', 'ifsc_code', 'insurance_number', 'previous_school', 'note','name_arabic', 'nationality', 'gender', 'city',
-            'iqama_number', 'passport_number', 'iqama_expiry_date', 'passport_expiry_date', 'passport_issued_from', 'school_house_id',
-            'category_id', 'father_education', 'father_iqama_number', 'father_passport_number', 'father_iqama_expiry', 'father_passport_expiry',
-            'father_passport_issued_from', 'mother_education', 'insurance_company_name', 'insurance_policy_number', 'insurance_contact_number',
+            'guardian_phone', 'guardian_occupation', 'guardian_address', 'current_address', 'permanent_address', 'previous_school', 'note', 'nationality', 'gender', 'city',
+            'category_id', 'father_education', 'mother_education',
             'allergies', 'medicine');
 
         $data["fields"] = $fields;
@@ -861,6 +853,8 @@ return $this->bulkUpdate();
             $class_id = $this->input->post('class_id');
             $section_id = $this->input->post('section_id');
             $session = $this->setting_model->getCurrentSession();
+
+            $this->db->trans_start();
             if (isset($_FILES["file"]) && !empty($_FILES['file']['name'])) {
                 $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
                 if ($ext == 'csv') {
@@ -946,6 +940,9 @@ return $this->bulkUpdate();
                                     'role' => 'parent',
                                     'childs' => $tempPreviousId
                                 );
+                                if (trim($data_parent_login['username'] ) == '') {
+                                    $data_parent_login['username'] = $this->parent_login_prefix . $data_parent_login['user_id'] . "_1";
+                                }
                                 $parentLoginArray[] = $data_parent_login;
                                 
                                 $admissionInc += 1;    
@@ -960,20 +957,25 @@ return $this->bulkUpdate();
 
                             $parentId = ($this->user_model->getLastId());
 
+                            // dd($parentLoginArray);
                             $this->user_model->add_bluk($parentLoginArray);
 
 
                             $tempParentId = (int)$parentId;
+
+                            // dd($StudentArray,'StudentArray',0);
                             foreach ($StudentArray as $std) {
                                 $tempParentId = $tempParentId + 1;
                                 $update_student = array(
                                     'admission_no' => $std['admission_no'],
-                                    'parent_id' => $tempParentId
+                                    'parent_id' => $tempParentId,
                                 );
+                                // dd($update_student,'update_student',0);
 
-                                $this->student_model->add($update_student);
+                                $this->student_model->add($update_student, true);
 
                             }
+                            // dd('end');
                         }
 
                         if($existingRecords > 0) {
@@ -993,7 +995,7 @@ return $this->bulkUpdate();
                     $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Please upload CSV file only.</div>');
                 }
             }
-
+            $this->db->trans_complete();
             redirect('student/import');
         }
     }

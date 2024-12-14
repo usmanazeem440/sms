@@ -44,7 +44,7 @@ class Receipts extends Admin_Controller {
         $config["base_url"] = base_url() . "/admin/receipts/index";
         $config["total_rows"] = $this->receipts_model->getReceiptsList(null,$guardian_id,true); 
         $config ['uri_segment'] = 4;
-        $config ['per_page'] = 50;
+        $config ['per_page'] = 25;
         $config ['num_links'] = 10;
         $config['full_tag_open'] = '<nav aria-label="Page navigation example">
   <ul class="pagination pg-blue">';

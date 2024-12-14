@@ -386,6 +386,20 @@
 
                                             <div class="form-group">
 
+                                                <label for="exampleInputEmail1"><?php echo ('CNIC'); ?></label>
+
+                                                <input id="epf_no" name="epf_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('epf_no') ?>"  />
+
+                                                <span class="text-danger"><?php echo form_error('epf_no'); ?></span>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+
                                                 <label for="exampleInputFile"> <?php echo $this->lang->line('gender'); ?></label><small class="req"> *</small>
 
                                                 <select class="form-control" name="gender">
@@ -678,20 +692,6 @@
 
                                             <div class="row around10">
 
-                                                <div class="col-md-4">
-
-                                                    <div class="form-group">
-
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('epf_no'); ?></label>
-
-                                                        <input id="epf_no" name="epf_no" placeholder="" type="text" class="form-control"  value="<?php echo set_value('epf_no') ?>"  />
-
-                                                        <span class="text-danger"><?php echo form_error('epf_no'); ?></span>
-
-                                                    </div>
-
-                                                </div>
-
 
 
 
@@ -880,7 +880,7 @@
 
                                                     <div class="form-group">
 
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('ifsc_code'); ?></label>
+                                                        <label for="exampleInputEmail1"><?php echo ('Branch Code'); ?></label>
 
                                                         <input id="ifsc_code" name="ifsc_code" placeholder="" type="text" class="form-control"  value="<?php echo set_value('ifsc_code') ?>" />
 

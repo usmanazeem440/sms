@@ -48,7 +48,8 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 3. Duplicate Admission Number (unique) and Roll Number (unique in class) rows will not be imported.<br/>
 4. For student Gender use Male, Female value.<br/>
 5. For student Blood Group use O+, A+, B+, AB+, O-, A-, B-, AB- value.<br/>
-6. For RTE use Yes, No value.
+6. Add Parent Id in csv under guardian_id column.
+<!-- 6. For RTE use Yes, No value. -->
 <hr/></div>
                     <div class="box-body table-responsive">
                 <table class="table table-striped table-bordered table-hover" id="sampledata">

@@ -91,7 +91,60 @@ class Leaverequest extends Admin_Controller {
     }
 
 
+    function countLeaveTotal($id, $alloted = true) {
 
+        $lid = $this->input->post("lid");
+
+        $alloted_leavetype = $this->leaverequest_model->leaveType($id);
+
+        $i = 0;
+
+        $data = array();
+        $html = "";
+
+        if (!empty($alloted_leavetype[0]["alloted_leave"])) {
+
+            foreach ($alloted_leavetype as $key => $value) {
+
+                $count_leaves[] = $this->leaverequest_model->countLeavesData($id, $value["leave_type_id"]);
+
+                $data[$i]['type'] = $value["type"];
+
+                $data[$i]['id'] = $value["leave_type_id"];
+
+                $data[$i]['alloted_leave'] = $value["alloted_leave"];
+
+                $data[$i]['approve_leave'] = $count_leaves[$i]['approve_leave'];
+
+                $i++;
+
+            }
+            // dd($data);
+            foreach ($data as $dkey => $dvalue) {
+
+                // if (!empty($dvalue["alloted_leave"])) {
+
+                    if ($alloted) {
+                        $leaves = (int)$dvalue["alloted_leave"];
+                    } else {
+                        $leaves = $dvalue["approve_leave"];
+                        if ($leaves == '') {
+                            $leaves = 0;
+                        }
+
+                    }
+
+                        $html .= "<div style='display:flex; justify-content:space-between'><div style='font-weight:600'>" . $dvalue["type"] . "</div> <div>(" . $leaves . ")" . " </div> </div> ";
+
+                // }
+
+            }
+
+        }
+
+        return $html;
+
+    }
     function countLeave($id) {
 
         $lid = $this->input->post("lid");
@@ -215,20 +268,16 @@ class Leaverequest extends Admin_Controller {
 //         }
 
         $id = $this->input->post("id");
-
-
-
         $result = $this->staff_model->getLeaveRecord($id);
-
         $leave_from = date("m/d/Y", strtotime($result->leave_from));
-
         $result->leavefrom = $leave_from;
-
         $leave_to = date("m/d/Y", strtotime($result->leave_to));
-
         $result->leaveto = $leave_to;
-
         $result->days = $this->dateDifference($result->leave_from, $result->leave_to);
+        // dd($result);
+        $result->alloted_leaves = $this->countLeaveTotal($result->staff_id, true);
+        $result->availed_leaves = $this->countLeaveTotal($result->staff_id, false);
+
 
         echo json_encode($result);
 

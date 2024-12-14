@@ -611,39 +611,45 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                               <span class="text-danger"><?php echo form_error('guardian_is'); ?></span>
                                         </div>
                                     </div>
+                                    
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label><small class="req"> *</small>
-                                                        <input id="guardian_name" name="guardian_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_name', $student['guardian_name']); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_relation'); ?></label>
-                                                        <input id="guardian_relation" name="guardian_relation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_relation', $student['guardian_relation']); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_relation'); ?></span>
-                                                    </div>
-                                                </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_name'); ?></label><small class="req"> *</small>
+                                                <input id="guardian_name" name="guardian_name" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_name', $student['guardian_name']); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_name'); ?></span>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label><small class="req"> *</small>
-                                                        <input id="guardian_phone" name="guardian_phone" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_phone', $student['guardian_phone']); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_phone'); ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_occupation'); ?></label>
-                                                        <input id="guardian_occupation" name="guardian_occupation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_occupation', $student['guardian_occupation']); ?>" />
-                                                        <span class="text-danger"><?php echo form_error('guardian_occupation'); ?></span>
-                                                    </div>
-                                                </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_relation'); ?></label>
+                                                <input id="guardian_relation" name="guardian_relation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_relation', $student['guardian_relation']); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_relation'); ?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_phone'); ?></label><small class="req"> *</small>
+                                                <input id="guardian_phone" name="guardian_phone" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_phone', $student['guardian_phone']); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_phone'); ?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_id'); ?><small class="req"> *</small></label>
+                                                <input id="guardian_id" required name="guardian_id" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_id', $student['guardian_id']); ?>"  />
+                                                <span class="text-danger"><?php echo form_error('guardian_id'); ?></span>
+                                            </div>
+                                        </div> 
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_occupation'); ?></label>
+                                                <input id="guardian_occupation" name="guardian_occupation" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_occupation', $student['guardian_occupation']); ?>" />
+                                                <span class="text-danger"><?php echo form_error('guardian_occupation'); ?></span>
                                             </div>
                                         </div>
 
@@ -655,6 +661,13 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                             </div>
                                           
                                         </div>
+                                        
+                                        
+                                       <div class="col-md-3">
+                                            <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_address'); ?></label>
+                                            <textarea id="guardian_address" name="guardian_address" placeholder="" class="form-control" rows="2"><?php echo set_value('guardian_address', $student['guardian_address']); ?></textarea>
+                                            <span class="text-danger"><?php echo form_error('guardian_address'); ?></span>
+                                        </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="exampleInputFile"><?php echo $this->lang->line('guardian'); ?> <?php echo $this->lang->line('photo'); ?></label>
@@ -662,20 +675,6 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 </div>
                                                 <span class="text-danger"><?php echo form_error('file'); ?></span></div>
                                         </div>
-                                          <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_id'); ?><small class="req"> *</small></label>
-                                                <input id="guardian_id" required name="guardian_id" placeholder="" type="text" class="form-control"  value="<?php echo set_value('guardian_id', $student['guardian_id']); ?>"  />
-                                                <span class="text-danger"><?php echo form_error('guardian_id'); ?></span>
-                                            </div>
-                                        </div> 
-                                        
-                                        
-                                          <div class="col-md-3">
-                                                <label for="exampleInputEmail1"><?php echo $this->lang->line('guardian_address'); ?></label>
-                                                <textarea id="guardian_address" name="guardian_address" placeholder="" class="form-control" rows="4"><?php echo set_value('guardian_address', $student['guardian_address']); ?></textarea>
-                                                <span class="text-danger"><?php echo form_error('guardian_address'); ?></span>
-                                            </div>
 
                                     </div>
                                 </div>
@@ -714,7 +713,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <div class="tshadow bozero">
                                 <h3 class="pagetitleh2"><?php echo $this->lang->line('miscellaneous_details'); ?></h3>
                                 <div class="around10">  
-                                    <div class="row">
+                                    <div class="row d-none">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1"><?php echo $this->lang->line('bank_account_no'); ?></label>
@@ -817,7 +816,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
         });
 
 
-        $(document).on('click', '#sibiling_class_id', function () {
+        $(document).on('change', '#sibiling_class_id', function () {
             var class_id = $(this).val();
             getSectionByClass(class_id, 0, 'sibiling_section_id');
         });

@@ -2681,8 +2681,8 @@ a:focus {
 }
 
 .btn-primary {
-    background-color: #727272;
-    border-color: #525252;
+    background-color: #042954;
+    border-color: #042954;
     transition: .3s;
 }
 
@@ -5567,8 +5567,8 @@ table.text-center th {
 }
 
 .btn-info {
-    background-color: #727272;
-    border-color: #525252
+    background-color: #042954;
+    border-color: #042954
 }
 
 .btn-info:hover,
@@ -6877,7 +6877,7 @@ a:after {
     /*width: 35.333%;*/
     background: #737373;
     color: #fff;
-    border: 1px solid #525252;
+    border: 1px solid #042954;
     position: absolute;
     right: 0;
 }
@@ -8392,8 +8392,8 @@ h3.box-title a:hover {
 }
 
 .removegraybtn {
-    background-color: #727272;
-    border-color: #525252;
+    background-color: #042954;
+    border-color: #042954;
     transition: .3s;
     color: #fff;
     border-radius: 0 3px 3px 0px !important;
@@ -8602,8 +8602,8 @@ h3.box-title a:hover {
 }
 
 .plusign {
-    background: #727272;
-    border: 1px solid #525252;
+    background: #042954;
+    border: 1px solid #042954;
     border-radius: 3px;
     float: right;
     color: #fff;

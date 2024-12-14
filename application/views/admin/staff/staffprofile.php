@@ -1,5 +1,6 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+// dd($resultlist);
 ?>
 <div class="content-wrapper">
     <div class="row">  
@@ -106,7 +107,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             </li>
 
                             <li class="list-group-item listnoback">
-                                <b><?php echo $this->lang->line('epf_no'); ?></b> <a class="pull-right text-aqua"><?php echo $staff['epf_no']; ?></a>
+                                <b><?php echo ('CNIC'); ?></b> <a class="pull-right text-aqua"><?php echo $staff['epf_no']; ?></a>
                             </li>
                             <li class="list-group-item listnoback">
                                 <b><?php echo $this->lang->line('basic_salary'); ?></b> <a class="pull-right text-aqua"><?php echo $staff['basic_salary']; ?></a>
@@ -294,7 +295,7 @@ if ($staff["is_active"] == 1) {
                                             </tr>
 
                                             <tr>
-                                                <td><?php echo $this->lang->line('ifsc_code'); ?></td>
+                                                <td><?php echo ('Branch Code'); ?></td>
                                                 <td><?php echo $staff['ifsc_code']; ?></td>
                                             </tr>   
 

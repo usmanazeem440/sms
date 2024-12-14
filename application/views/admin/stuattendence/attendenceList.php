@@ -321,8 +321,17 @@
     </section>
 </div>
 <script type="text/javascript">
-
+    window.onload = function() {
+        var classID = $('#class_id').find(':selected').val();
+        console.log(classID)
+        if(classID != '') {
+            $('#class_id').trigger('change');
+        }
+    }
     $(document).ready(function () {
+        var section_id = "<?php echo $section_id ?>";
+        console.log(section_id)
+
         $('#class_id').change(function(){
             var attendanceType =  $(this).find(':selected').data('attendance_type');
 
@@ -360,6 +369,7 @@
                 url: base_url + "sections/getByClass",
                 data: {'class_id': class_id_post},
                 dataType: "json",
+                // async: false,
                 success: function (data) {
                     $.each(data, function (i, obj) {
                         var select = (section_id_post == obj.section_id) ? "selected=selected" : "";
@@ -422,6 +432,12 @@
                         div_data += "<option value=" + obj.section_id + ">" + obj.section + "</option>";
                     });
                     $('#section_id').append(div_data);
+
+                    console.log('success section_id'+ section_id);
+                    if(section_id != '') {
+                        $('#section_id').val(section_id);
+                        section_id = '';
+                    }
                 }
             });
         });

@@ -462,22 +462,25 @@ public function searchFullTextCount($searchterm, $carray = null) {
 
 
 
-    public function add($data) {
-
-       /* if (isset($data['admission_no'])) {
-            $this->db->where('admission_no', $data['admission_no']);
-            $this->db->update('students', $data);
-        }*/
+    public function add($data, $update = false) {
 
 
-        if (isset($data['id'])) {
-            $this->db->where('id', $data['id']);
-            $this->db->update('students', $data);
+        if($update) { // currently updated code for update by admission no
+            if (isset($data['admission_no'])) {
+                $this->db->where('admission_no', $data['admission_no']);
+                $this->db->update('students', $data);
+            }
         } else {
-            $this->db->insert('students', $data);
-       
-            return $this->db->insert_id();
+            if (isset($data['id'])) {
+                $this->db->where('id', $data['id']);
+                $this->db->update('students', $data);
+            } else {
+                $this->db->insert('students', $data);
+            
+                return $this->db->insert_id();
+            }
         }
+        
     }
 
     public function getLastId(){
@@ -578,7 +581,18 @@ public function searchFullTextCount($searchterm, $carray = null) {
         $this->db->where('students.parent_id', $id);
         $this->db->where('students.guardian_id !=', '');
         $query = $this->db->get('students');
-        return $query->result();;
+        return $query->result();
+    }
+
+    public function getParentId($id){
+        $this->db->select("students.parent_id");
+        $this->db->where('students.guardian_id', $id);
+        $this->db->where('students.parent_id !=', '');
+        $this->db->where('students.parent_id >', 0);
+        $query = $this->db->get('students');
+
+        $result = ($query->num_rows() > 0) ? $query->row()->parent_id : FALSE;
+        return $result;
     }
 
 
@@ -617,19 +631,20 @@ public function searchFullTextCount($searchterm, $carray = null) {
 
 
     public function getMySiblings($parent_id, $student_id) {
-
-
-        $this->db->select('students.*,classes.id as `class_id`,classes.class,sections.id as `section_id`,sections.section,student_session.session_id as `session_id`')->from('students');
-        $this->db->join('student_session', 'student_session.student_id = students.id');
-        $this->db->join('classes', 'student_session.class_id = classes.id');
-        $this->db->join('sections', 'sections.id = student_session.section_id');
-        $this->db->join('categories', 'students.category_id = categories.id', 'left');
-        $this->db->where('student_session.session_id', $this->current_session);
-        $this->db->where_not_in('students.id', $student_id);
-        $this->db->where('students.parent_id', $parent_id);
-        $this->db->where('students.is_active', 'yes');
-        $query = $this->db->get();
-        return $query->result();
+        // dd($parent_id);
+        if($parent_id != '' && $parent_id > 0) {
+            $this->db->select('students.*,classes.id as `class_id`,classes.class,sections.id as `section_id`,sections.section,student_session.session_id as `session_id`')->from('students');
+            $this->db->join('student_session', 'student_session.student_id = students.id');
+            $this->db->join('classes', 'student_session.class_id = classes.id');
+            $this->db->join('sections', 'sections.id = student_session.section_id');
+            $this->db->join('categories', 'students.category_id = categories.id', 'left');
+            $this->db->where('student_session.session_id', $this->current_session);
+            $this->db->where_not_in('students.id', $student_id);
+            $this->db->where('students.parent_id', $parent_id);
+            $this->db->where('students.is_active', 'yes');
+            $query = $this->db->get();
+            return $query->result();
+        }
     }
 
     public function getAttedenceByDateandClass($date) {

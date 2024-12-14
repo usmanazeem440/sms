@@ -81,7 +81,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                             <li class="list-group-item listnoback">
                                 <b><?php echo $this->lang->line('section'); ?></b> <a class="pull-right text-aqua"><?php echo $student['section']; ?></a>
                             </li>
-                            <li class="list-group-item listnoback">
+                            <li class="list-group-item listnoback d-none">
                                 <b>Insurance Number</b> <a class="pull-right text-aqua"><?php echo $student['insurance_number']; ?></a>
                             </li>
                             <li class="list-group-item listnoback">
@@ -454,27 +454,27 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 <td  class="col-md-4">Address</td>
                                                 <td  class="col-md-5"><?php echo $student['address']; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td  class="col-md-4"><?php echo $this->lang->line('previous_school_details'); ?></td>
                                                 <td  class="col-md-5"><?php echo $student['previous_school']; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td  class="col-md-4">Father's Iqama Number</td>
                                                 <td  class="col-md-5"><?php echo $student['father_iqama_number']; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td>Father's Passport Number</td>
                                                 <td><?php echo $student['father_passport_number']; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td><?php echo $this->lang->line('bank_account_no'); ?></td>
                                                 <td><?php echo $student['bank_account_no']; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td><?php echo $this->lang->line('bank_name'); ?></td>
                                                 <td><?php echo $student['bank_name']; ?></td>
                                             </tr>
-                                            <tr>
+                                            <tr class="d-none">
                                                 <td><?php echo $this->lang->line('ifsc_code'); ?></td>
                                                 <td><?php echo $student['ifsc_code']; ?></td>
                                             </tr>
@@ -537,6 +537,7 @@ if (empty($student_due_fee) && empty($student_discount_fee)) {
 
                 foreach ($fee_deposits as $fee_deposits_key => $fee_deposits_value) {
                     $fee_paid = $fee_paid + $fee_deposits_value->amount;
+                    // $fee_paid = $fee_paid + $fee_deposits_value->amount - $fee_deposits_value->amount_discount;
                     $fee_discount = $fee_discount + $fee_deposits_value->amount_discount;
                     $fee_fine = $fee_fine + $fee_deposits_value->amount_fine;
                 }
@@ -660,6 +661,7 @@ if (empty($student_due_fee) && empty($student_discount_fee)) {
                                                                 <td class="text text-right"><?php echo (number_format($fee_deposits_value->amount_discount, 2, '.', '')); ?></td>
                                                                 <td class="text text-right"><?php echo (number_format($fee_deposits_value->amount_fine, 2, '.', '')); ?></td>
                                                                 <td class="text text-right"><?php echo (number_format($fee_deposits_value->amount, 2, '.', '')); ?></td>
+                                                                <!-- <td class="text text-right"><?php echo (number_format(($fee_deposits_value->amount - $fee_deposits_value->amount_discount), 2, '.', '')); ?></td> -->
 
 
                                                                 <td></td>
