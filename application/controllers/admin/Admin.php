@@ -556,6 +556,30 @@ class Admin extends Admin_Controller {
         redirect('admin/admin/backup');
     }
 
+    function set_auto_increment_on_primary_key() {
+        // Load the database
+        $this->load->database();
+
+        // Get the list of all tables in the database
+        $tables = $this->db->list_tables();
+
+        foreach ($tables as $table) {
+            // Get primary key information for each table
+            $fields = $this->db->field_data($table);
+            
+
+            foreach ($fields as $field) {
+                // Check if the column is the primary key and is not set to auto_increment
+                if ($field->primary_key == 1 && $field->auto_increment == 0) {
+                    dd($table,'table',0);
+                    // Alter the table to set the primary key column as auto_increment
+                    $this->db->query("ALTER TABLE `$table` MODIFY `$field->name` INT AUTO_INCREMENT");
+                    echo "Auto increment set for column {$field->name} in table {$table}.\n";
+                }
+            }
+        }
+    }
+
 }
 
 ?>
