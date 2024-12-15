@@ -570,9 +570,10 @@ class Admin extends Admin_Controller {
 
             foreach ($fields as $field) {
                 // Check if the column is the primary key and is not set to auto_increment
-                if ($field->primary_key == 1 && $field->auto_increment == 0) {
+                if ($field->primary_key == 1) {
                     dd($table,'table',0);
                     // Alter the table to set the primary key column as auto_increment
+                    $this->db->query("set sql_mode = ''");
                     $this->db->query("ALTER TABLE `$table` MODIFY `$field->name` INT AUTO_INCREMENT");
                     echo "Auto increment set for column {$field->name} in table {$table}.\n";
                 }
