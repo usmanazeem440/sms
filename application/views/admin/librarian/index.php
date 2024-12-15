@@ -22,7 +22,7 @@
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_by_keyword'); ?></label>
-                                                <input type="text" name="library_card_no" class="form-control"   placeholder="<?php echo $this->lang->line('search_by_student_name'); ?>">
+                                                <input type="text" name="library_card_no" class="form-control"   placeholder="<?php echo $this->lang->line('search_by_student_name'); ?>" value="<?= $library_card_no ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-12">
@@ -63,7 +63,58 @@
                                     </tr>
                                 </thead>
                                 <tbody id="getdetails">
-                                    
+                                    <?php
+                                        if (!empty($memberList)) {
+                                            $count = 1;
+                                            foreach ($memberList as $member) {
+
+                                                if ($member['member_type'] == "student") {
+                                                    $name = $member['firstname'] . " " . $member['lastname'];
+                                                    $class_name = $member['class_name'];
+                                                    $section = $member['section'];
+                                                } else {
+                                                    $email = $member['teacher_email'];
+                                                    $name = $member['teacher_name'];
+                                                    $sex = $member['teacher_sex'];
+                                                    $class_name = $member['class_name'];
+                                                    $section = $member['section'];
+                                                }
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <?php echo $member['lib_member_id']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $member['library_card_no']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $member['admission_no']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $name; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $this->lang->line($member['member_type']); ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $class_name." ( ".$section." ) "; ?>
+                                                    </td>
+                                                    
+                                                    <td class="mailbox-date pull-right">
+                                                        <a href="<?php echo base_url(); ?>admin/member/issue/<?php echo $member['lib_member_id'] ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="<?php echo $this->lang->line('issue_return'); ?>">
+                                                            <i class="fa fa-sign-out"></i>
+                                                        </a>
+
+
+                                                    </td>
+
+                                                </tr>
+                                                <?php
+                                            }
+                                            $count++;
+                                        }
+                                    ?>
+                                                                        
                                 </tbody>
                             </table>
                             <?php echo $links;?>
@@ -75,24 +126,25 @@
     </section>
 </div>
 <script type="text/javascript">
+    
     $(document).ready(function(){
      
-     $.ajax({
+     // $.ajax({
 
-            url: '<?php echo base_url(); ?>admin/member/ajax/',
+     //        url: '<?php echo base_url(); ?>admin/member/ajax/',
 
-            success: function (result) {
+     //        success: function (result) {
 
-                //alert(result);
+     //            //alert(result);
 
-                $('#getdetails').html(result);
+     //            $('#getdetails').html(result);
 
-            }
-
-
+     //        }
 
 
 
-        });
+
+
+     //    });
      });
 </script>

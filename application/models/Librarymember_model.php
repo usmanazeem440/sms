@@ -15,63 +15,86 @@ class Librarymember_model extends CI_Model {
      * @param int $id
      * @return mixed
      */
-    public function get($getTotalCount = FALSE, $limit = 10, $start = 0) {
+    public function get($getTotalCount = FALSE, $limit = 10, $start = 0, $library_card_no = '') {
+        // Define the common query structure
+        $base_query = "
+            SELECT 
+                libarary_members.id AS lib_member_id,
+                libarary_members.library_card_no,
+                libarary_members.member_type,
+                students.admission_no,
+                students.firstname,
+                students.lastname,
+                students.guardian_phone,
+                NULL AS teacher_name,
+                NULL AS teacher_email,
+                NULL AS teacher_sex,
+                NULL AS teacher_phone,
+                classes.class AS class_name,
+                sections.section AS section
+            FROM
+                libarary_members
+            INNER JOIN
+                students ON libarary_members.member_id = students.id
+            INNER JOIN 
+                student_session ON student_session.student_id = students.id
+            INNER JOIN 
+                classes ON student_session.class_id = classes.id
+            INNER JOIN 
+                sections ON sections.id = student_session.section_id
+            WHERE
+                libarary_members.member_type = 'student'
+        ";
 
-        $query = ""
-                . "SELECT 
-    libarary_members.id as `lib_member_id`,
-    libarary_members.library_card_no,
-    libarary_members.member_type,
-    students.admission_no,
-    students.firstname,
-    students.lastname,
-    students.guardian_phone,
-    null as `teacher_name`,
-    null as `teacher_email`,
-    null as `teacher_sex`,
-    null as `teacher_phone`,
-	classes.class as `class_name`,
-        sections.section as `section`
-FROM
-    `libarary_members`
-        INNER JOIN
-    students ON libarary_members.member_id = students.id
-INNER JOIN student_session ON student_session.student_id = students.id
-INNER JOIN classes ON student_session.class_id = classes.id
-INNER JOIN sections ON sections.id= student_session.section_id
-WHERE
-    libarary_members.member_type = 'student'
-        
-UNION SELECT 
-    libarary_members.id as `lib_member_id`,
-    libarary_members.library_card_no,
-    libarary_members.member_type,
-    null,
-    null,
-    null,
-    null,
-    staff.name,
-    staff.surname,
-    staff.email,
-    staff.contact_no,
-	null as `class_name`,
-       null as `section`
-FROM
-    `libarary_members`
-        INNER JOIN
-    staff ON libarary_members.member_id = staff.id
-WHERE
-    libarary_members.member_type = 'teacher'";   
-        if ($getTotalCount) {
-            return $this->db->count_all_results();
-        } else {
-            $this->db->limit($limit, $start);
-            $query = $this->db->query($query);
-            
-            return $query->result_array();
+        $teacher_query = "
+            SELECT 
+                libarary_members.id AS lib_member_id,
+                libarary_members.library_card_no,
+                libarary_members.member_type,
+                NULL,
+                NULL,
+                NULL,
+                NULL,
+                staff.name,
+                staff.surname,
+                staff.email,
+                staff.contact_no,
+                NULL AS class_name,
+                NULL AS section
+            FROM
+                libarary_members
+            INNER JOIN
+                staff ON libarary_members.member_id = staff.id
+            WHERE
+                libarary_members.member_type = 'teacher'
+        ";
+
+        // Add library_card_no condition if not empty
+        if (!empty($library_card_no)) {
+            $base_query .= " AND libarary_members.library_card_no = " . $this->db->escape($library_card_no);
+            $teacher_query .= " AND libarary_members.library_card_no = " . $this->db->escape($library_card_no);
         }
-    
-}
+
+        // Combine both queries
+        $final_query = $base_query . " UNION " . $teacher_query;
+
+        // If the function is called to fetch the total count
+        if ($getTotalCount) {
+            $count_query = "SELECT COUNT(*) AS total_count FROM ($final_query) AS combined_query";
+            $query = $this->db->query($count_query); // Run the count query
+            $result = $query->row();
+            return $result->total_count; // Return the total count
+        } else {
+            // Add the LIMIT clause for pagination
+            $paginated_query = $final_query . " LIMIT ?, ?";
+            $query = $this->db->query($paginated_query, array((int)$start, (int)$limit)); // Bind parameters
+            return $query->result_array(); // Return the paginated results
+        }
+
+
+    }
+
+
 
     public function checkIsMember($member_type, $id) {
         $this->db->select()->from('libarary_members');

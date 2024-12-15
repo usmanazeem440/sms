@@ -18,10 +18,11 @@ class Member extends Admin_Controller {
         $data['title'] = 'Member';
         $data['title_list'] = 'Members';
         $library_card_no= $this->input ->get('library_card_no');
+        // dd($library_card_no);
         /*if($library_card_no==""){
         $memberList = $this->librarymember_model->get();
         $data['memberList'] = $memberList;
-    }
+        }
         //echo "<pre>"; print_r($library_card_no); exit;
         if($library_card_no!=""){
         $memberList = $this->librarymember_model->get($library_card_no);
@@ -32,15 +33,19 @@ class Member extends Admin_Controller {
         
         
        // $listbook = $this->book_model->get();
+
+
         $config = array();
         $config['reuse_query_string'] = true;
         $config['use_page_numbers'] = TRUE;
-        $config["base_url"] = base_url() . "admin/book/getall";
+        $config["base_url"] = base_url() . "admin/member/index";
 
         $config ['uri_segment'] = 4;
-        $config ['per_page'] = 2;
+        $config ['per_page'] = 25;
         $config ['num_links'] = 5;
-        $config["total_rows"] = $this->librarymember_model->get( true);
+        $config["total_rows"] = $this->librarymember_model->get( true, false, false, $library_card_no);
+        $data['library_card_no'] = $library_card_no;
+        // dd($config["total_rows"],'test');
         $config['full_tag_open'] = '<nav aria-label="Page navigation example">
                       <ul class="pagination pg-blue">';
         $config['full_tag_close'] = ' </ul>
@@ -61,14 +66,20 @@ class Member extends Admin_Controller {
         $config['cur_tag_close'] = '</a></li>';
         $config['num_tag_open'] = '<li class="page-item">';
         $config['num_tag_close'] = '</li>';
-        $this->pagination->initialize($config);
 
+        $this->pagination->initialize($config);
         $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 1;
+        // dd($page);
         $offset = ($page - 1) * $config ['per_page'];
         //echo $config["per_page"]."-----".$offset;
         
         //echo  "Total rows:".$config["total_rows"];
         $data["links"] = $this->pagination->create_links();
+        // dd($data['links']);
+        $memberList = $this->librarymember_model->get(FALSE, $config["per_page"], $offset, $library_card_no);
+        // dd($this->db->last_query());
+        $data['memberList'] = $memberList;
+
         $this->load->view('layout/header');
         $this->load->view('admin/librarian/index', $data);
         $this->load->view('layout/footer');

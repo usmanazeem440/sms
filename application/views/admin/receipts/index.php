@@ -23,7 +23,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_by_parent'); ?></label>
-                                                <input type="text" name="search_text" value="<?php echo $guardian_id;?>" class="form-control" placeholder="<?php echo $this->lang->line('search_by_parent'); ?>">
+                                                <input type="text" name="search_text" value="<?php echo $guardian_id;?>" class="form-control" placeholder="<?php echo ('Search Parent ID, Parent Name etc'); ?>">
                                             </div>
                                         </div>
 

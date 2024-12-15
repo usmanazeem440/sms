@@ -54,9 +54,13 @@ class Receipts_model extends CI_Model {
     public function getReceiptsList($id = null, $guardian_id = null, $getTotal = false,$limit=10, $start=0) {
 
         $this->db->select("receipts.*, students.parent_id,students.guardian_id")->from('receipts');
-        $this->db->join('(select students.parent_id,students.guardian_id  from students group by parent_id) as students', ' receipts.parent_id = students.parent_id');
-        if ($guardian_id != '')
+        $this->db->join('(select students.parent_id,students.guardian_id, students.father_name  from students group by parent_id) as students', ' receipts.parent_id = students.parent_id');
+        if ($guardian_id != ''){
+            $this->db->group_start();
             $this->db->where('students.guardian_id', $guardian_id);
+            $this->db->or_where('students.father_name', $guardian_id);
+            $this->db->group_end();
+        }
         if ($id != null) {
             $this->db->where('receipts.id', $id);
         } 
