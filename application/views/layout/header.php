@@ -116,6 +116,10 @@
 
         <script src="<?php echo base_url(); ?>backend/dist/js/jquery-ui.min.js"></script>
 
+        <script type="text/javascript">
+            var base_url = '<?= AJAXURL  ?>';
+        </script>
+
         <script src="<?php echo base_url(); ?>backend/js/school-custom.js"></script>
 
         <!-- fullCalendar -->

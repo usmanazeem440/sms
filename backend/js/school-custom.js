@@ -1,3 +1,43 @@
+
+function Popup(data)
+{
+
+    var frame1 = $('<iframe />');
+    frame1[0].name = "frame1";
+    frame1.css({"position": "absolute", "top": "-1000000px"});
+    $("body").append(frame1);
+    var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+    frameDoc.document.open();
+    //Create a new HTML document.
+    frameDoc.document.write('<html>');
+    frameDoc.document.write('<head>');
+    frameDoc.document.write('<title></title>');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/bootstrap/css/bootstrap.min.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/font-awesome.min.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/ionicons.min.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/AdminLTE.min.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/dist/css/skins/_all-skins.min.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/iCheck/flat/blue.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/morris/morris.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/jvectormap/jquery-jvectormap-1.2.2.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/datepicker/datepicker3.css">');
+    frameDoc.document.write('<link rel="stylesheet" href="' + base_url + 'backend/plugins/daterangepicker/daterangepicker-bs3.css">');
+    frameDoc.document.write('</head>');
+    frameDoc.document.write('<body>');
+    frameDoc.document.write(data);
+    frameDoc.document.write('</body>');
+    frameDoc.document.write('</html>');
+    frameDoc.document.close();
+    setTimeout(function () {
+        window.frames["frame1"].focus();
+        window.frames["frame1"].print();
+        frame1.remove();
+    }, 500);
+
+
+    return true;
+}
+
  $( document ).on( 'focus', ':input', function(){
         $( this ).attr( 'autocomplete', 'off' );
     });
