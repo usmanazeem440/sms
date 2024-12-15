@@ -218,7 +218,7 @@
     } ?>
 
                         <?php if(!$this->rbac->hasPrivilege('sales_reports','can_view')) {?>
-                            <li class="treeview <?php echo set_Topmenu('store_orders'); ?>">
+                            <li class="treeview <?php echo set_Topmenu('sales_reports'); ?>">
                                 <a href="#">
                                  <i class="fa fa-book"></i> <span> <?php echo $this->lang->line('sales_report'); ?></span> <i class="fa fa-angle-left pull-right"></i>
                              </a>
@@ -229,7 +229,7 @@
                                 </ul>
                             </li>
                         <?php } else{ ?>
-                            <li class="treeview <?php echo set_Topmenu('store_orders'); ?>">
+                            <li class="treeview <?php echo set_Topmenu('sales_reports'); ?>">
                                 <a href="#">
                                     <i class="fa fa-book"></i> <span> <?php echo $this->lang->line('sales_report'); ?></span> <i class="fa fa-angle-left pull-right"></i>
                                 </a>

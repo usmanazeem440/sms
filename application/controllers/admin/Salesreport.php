@@ -13,6 +13,8 @@ class Salesreport extends Admin_Controller {
 
     function dailyReport(){
 
+        $this->session->set_userdata('top_menu', 'sales_reports');
+        $this->session->set_userdata('sub_menu', 'admin/Salesreport/dailyReport');
         $user =  $this->customlib->getUserData()['name'];
         $data["orders"] = $this->store_orders->getTodaysReport($user);
         $data["sales_tax"] = $this->setting_model->getSalesTax();
@@ -25,6 +27,8 @@ class Salesreport extends Admin_Controller {
 
 
     function weeklyReport(){
+        $this->session->set_userdata('top_menu', 'sales_reports');
+        $this->session->set_userdata('sub_menu', 'admin/Salesreport/weeklyReport');
 
         $user =  $this->customlib->getUserData()['name'];
         $data["orders"] = $this->store_orders->getWeeklyReport($user);
@@ -36,6 +40,8 @@ class Salesreport extends Admin_Controller {
     }
 
     function allReports(){
+        $this->session->set_userdata('top_menu', 'sales_reports');
+        $this->session->set_userdata('sub_menu', 'admin/Salesreport/allReports');
         $user =  $this->customlib->getUserData()['name'];
         $data["orders"] = $this->store_orders->getAllReports($user);
         $data["sales_tax"] = $this->setting_model->getSalesTax();
@@ -46,6 +52,9 @@ class Salesreport extends Admin_Controller {
     }
 
     function allDailyReport(){
+        $this->session->set_userdata('top_menu', 'sales_reports');
+        $this->session->set_userdata('sub_menu', 'admin/Salesreport/allDailyReport');
+
         $user =  $this->customlib->getUserData()['name'];
         $data["orders"] = $this->store_orders->getAllTodaysReport($user);
         //echo "<pre>";  print_r(  $data["orders"]);exit;
@@ -59,6 +68,9 @@ class Salesreport extends Admin_Controller {
 
 
     function allWeeklyReport(){
+        $this->session->set_userdata('top_menu', 'sales_reports');
+        $this->session->set_userdata('sub_menu', 'admin/Salesreport/allWeeklyReport');
+        
         $user =  $this->customlib->getUserData()['name'];
      
         $data["orders"] = $this->store_orders->getAllWeeklyReport($user);
@@ -75,6 +87,9 @@ class Salesreport extends Admin_Controller {
     }
 
     function allCompleteReports(){
+        $this->session->set_userdata('top_menu', 'sales_reports');
+        $this->session->set_userdata('sub_menu', 'admin/Salesreport/allCompleteReports');
+
         $user =  $this->customlib->getUserData()['name'];
         $data["orders"] = $this->store_orders->getAllCompleteReports($user);
          //echo "<pre>";  print_r(  $data["orders"]);exit;
