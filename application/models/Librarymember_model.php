@@ -44,6 +44,7 @@ class Librarymember_model extends CI_Model {
                 sections ON sections.id = student_session.section_id
             WHERE
                 libarary_members.member_type = 'student'
+            GROUP BY students.id
         ";
 
         $teacher_query = "
@@ -88,11 +89,11 @@ class Librarymember_model extends CI_Model {
             // Add the LIMIT clause for pagination
             $paginated_query = $final_query . " LIMIT ?, ?";
             $query = $this->db->query($paginated_query, array((int)$start, (int)$limit)); // Bind parameters
+            // dd($this->db->last_query());
             return $query->result_array(); // Return the paginated results
         }
+    }   
 
-
-    }
 
 
 

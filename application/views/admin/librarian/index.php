@@ -6,6 +6,15 @@
             display: none !important;
         }
     }
+    .submit-btn {
+        margin-top: 23px;
+    }
+    @media screen and (max-width: 767px) {
+        .submit-btn {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+    }
 </style>
 <div class="content-wrapper" style="min-height: 946px;">  
     <section class="content-header">
@@ -15,24 +24,27 @@
     <!-- Main content -->
     <section class="content">
         <div class="row">  
-        <div class="col-md-3">
-                               
-                                    <form role="form" action="<?php echo site_url('admin/member') ?>" method="get" class="">
-                                        <?php //echo $this->customlib->getCSRF(); ?>
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label><?php echo $this->lang->line('search_by_keyword'); ?></label>
-                                                <input type="text" name="library_card_no" class="form-control"   placeholder="<?php echo $this->lang->line('search_by_student_name'); ?>" value="<?= $library_card_no ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary pull-right btn-sm checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
-                                            </div>
-                                        </div>
-                                    </form>
-                            </div>     
+            <div class="col-md-7 col-lg-4 col-sm-12">
+                                   
+                <form role="form" action="<?php echo site_url('admin/member') ?>" method="get" class="">
+                    <?php //echo $this->customlib->getCSRF(); ?>
+                    <div class="col-sm-9" style="padding-left: 0; padding-right: 0">
+                        <div class="form-group">
+                            <label><?php echo ('Library Card No'); ?></label>
+                            <input type="text" name="library_card_no" class="form-control"   placeholder="<?php echo ('Library Card No'); ?>" value="<?= $library_card_no ?>">
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding-left: 0; padding-right: 0">
+                        <div class="form-group">
 
+                            <button type="submit" style="min-height: 34px;" class="btn btn-primary pull-right btn-sm checkbox-toggle submit-btn"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                        </div>
+                    </div>
+                </form>
+            </div>    
+        </div> 
+
+        <div class="row">  
             <div class="col-md-12">              
                 <div class="box box-primary" id="tachelist">
                     <div class="box-header ptbnull">
@@ -47,7 +59,7 @@
                         </div>
                         <div class="table-responsive mailbox-messages">
                             <div class="download_label"><?php echo $this->lang->line('members'); ?></div>
-                            <table  class="table table-striped table-bordered table-hover example" id="members">
+                            <table  class="table table-striped table-bordered table-hover withoutPagination" id="members">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('member_id'); ?></th>

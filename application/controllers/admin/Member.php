@@ -7,6 +7,8 @@ class Member extends Admin_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->setting = $this->setting_model->get();
+
     }
 
     public function index() {
@@ -18,6 +20,7 @@ class Member extends Admin_Controller {
         $data['title'] = 'Member';
         $data['title_list'] = 'Members';
         $library_card_no= $this->input ->get('library_card_no');
+
         // dd($library_card_no);
         /*if($library_card_no==""){
         $memberList = $this->librarymember_model->get();
@@ -206,15 +209,16 @@ class Member extends Admin_Controller {
         $current_date= date("Y-m-d");
         if($current_date > $return_date) 
          {   
+            $symbol = $this->setting[0]['currency_symbol'];
             $a =strtotime(date('Y-m-d'));
             $time = new DateTime($return_date);
             $date = $time->format('Y-m-d');
             $b = strtotime($date);
             $diff = $a -$b;
             $days= floor($diff/(60*60*24));
-            $balance=$days*1;
+            $balance=$days*10; // hardcoded 10 rupees fine
             $this->bookissue_model->add_fine($book_issue_id,$days,$balance);
-            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">You have fine SR'.$balance. '.00/ please pay this. Book Returned Successfully</div>');
+            $this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">You have fine '.$symbol.$balance. '.00/ please pay this. Book Returned Successfully</div>');
          }
          else{
         $this->session->set_flashdata('msg', '<div class="alert alert-success text-left">Book returned successfully.</div>');
