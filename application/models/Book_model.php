@@ -246,7 +246,7 @@ class Book_model extends CI_Model {
                 ->or_like('tags',$search)
                 ->or_like('class',$search)
                 ->limit($limit,$start)
-                ->order_by('id',"asc")
+                ->order_by('id',"desc")
                 //->join('inv_store', 'inv_store.store_id = books.category_store_id')
                 ->get('books');
         $result = ($query->num_rows() > 0) ? $query->result() : FALSE;
