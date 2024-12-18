@@ -71,7 +71,7 @@ class Book extends Admin_Controller {
         $this->load->view('layout/footer');
     }
 
-    public function getall() {
+    public function getall_old() {
         if (!$this->rbac->hasPrivilege('books', 'can_view')) {
             access_denied();
         }
@@ -125,6 +125,96 @@ class Book extends Admin_Controller {
         $this->load->view('layout/header');
         $this->load->view('admin/book/getall', $data);
         $this->load->view('layout/footer');
+    }
+
+    public function getall() {
+        if (!$this->rbac->hasPrivilege('books', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Library');
+        $this->session->set_userdata('sub_menu', 'book/getall');
+        $data['title'] = 'Add Book';
+        $data['title_list'] = 'Book Details';
+    
+        $this->load->view('layout/header');
+        $this->load->view('admin/book/getall', $data);
+        $this->load->view('layout/footer');
+    }
+
+    public function getallList(){
+        $limit = $this->input->post('length');
+        $start = $this->input->post('start');
+
+        $totalData = $this->book_model->all_books_count();
+
+        $totalFiltered = $totalData;
+
+        if(empty($this->input->post('search')['value']))
+        {
+            $books = $this->book_model->all_books($limit,$start);
+        }
+        else {
+            $search = trim($this->input->post('search')['value']); 
+
+            $books =  $this->book_model->books_search($limit,$start,$search);
+
+            $totalFiltered = $this->book_model->books_search_count($search);
+        }
+
+        $data = array();
+        if(!empty($books))
+        {
+            foreach ($books as $book)
+              {
+                $action = '';
+                if ($this->rbac->hasPrivilege('books', 'can_edit')) {
+                    $action .= '<a href="'.base_url('admin/book/edit/'.$book->id).'" class="btn btn-default btn-xs"  data-toggle="tooltip" title="'.$this->lang->line("edit").'">
+                                    <i class="fa fa-pencil"></i>
+                                </a>';
+                }
+                if ($this->rbac->hasPrivilege('books', 'can_delete')) {
+                    $action .= '<a href="'.base_url('admin/book/delete/'.$book->id).'" class="btn btn-default btn-xs"  data-toggle="tooltip" title="'.$this->lang->line("delete_confirm").'">
+                                    <i class="fa fa-remove"></i>
+                                </a>';
+                }
+                $nestedData['other'] = $book->other;
+                $nestedData['book_no'] = $book->book_no;
+                $nestedData['book_title'] = '<a href="#" data-toggle="popover" class="detail_popover">'. $book->book_title. '</a>
+                    <div class="fee_detail_popover" style="display: none">';
+                if ($book->description == "") {
+                    $nestedData['book_title'] .= '<p class="text text-danger">'.$this->lang->line('no_description').'</p>';
+                } else {
+                    $nestedData['book_title'] .= '<p class="text text-info">'.$book->description.'</p>';
+                }
+                $nestedData['book_title'] .= '</div>';
+
+                // $nestedData['book_title'] = '<a href="#" data-toggle="popover" class="detail_popover" data-original-title="" title="">'. $book->book_title. '</a> <div class="fee_detail_popover" style="display: none">
+                //     <p class="text text-info">This is a description for book 200.</p>
+                // </div>';
+                $nestedData['isbn_no'] = $book->isbn_no;
+                $nestedData['publish'] = $book->publish;
+                $nestedData['author'] = $book->author;
+                $nestedData['subject'] = $book->subject;
+                $nestedData['location'] = $book->location;
+                $nestedData['class'] = $book->class;
+                $nestedData['tags'] = $book->tags;
+                $nestedData['is_active'] = $book->is_active;
+                $nestedData['available'] = $book->available;
+                $nestedData['action'] = "<div class='mailbox-date no-print text text-right'>".$action."";
+
+                $data[] = $nestedData;
+
+              }
+        }
+
+        $json_data = array(
+                    "draw"            => intval($this->input->post('draw')),
+                    "recordsTotal"    => intval($totalData),
+                    "recordsFiltered" => intval($totalFiltered),
+                    "data"            => $data
+                    );
+
+        echo json_encode($json_data);
     }
 
     function create() {

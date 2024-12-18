@@ -122,6 +122,21 @@ class Book_model extends CI_Model {
         // if(trim($subject) != '')
         //     $this->db->where('subject',$subject);
       //  $this->db->limit(10);
+        if (isset($_GET['book_title']) && !empty($_GET['book_title'])) {
+            $this->db->where('book_title', trim($_GET['book_title']));
+        }
+        if (isset($_GET['book_no']) && !empty($_GET['book_no'])) {
+            $this->db->where('book_no', trim($_GET['book_no']));
+        }
+        if (isset($_GET['author']) && !empty($_GET['author'])) {
+            $this->db->where('author', trim($_GET['author']));
+        }
+        if (isset($_GET['other']) && !empty($_GET['other'])) {
+            $this->db->where('other', trim($_GET['other']));
+        }
+        if (isset($_GET['subject']) && !empty($_GET['subject'])) {
+            $this->db->where('subject', trim($_GET['subject']));
+        }
         $this->db->order_by("id", "desc");
         if ($getTotalCount) {
             return $this->db->count_all_results();
@@ -193,5 +208,64 @@ class Book_model extends CI_Model {
         return $query->num_rows();
         
     }
+
+    //Server side Datatables Methods Start
+    public function all_books_count(){   
+        $query = $this
+                ->db
+                ->get('books');
+        return $query->num_rows(); 
+    }
+    public function all_books($limit,$start){   
+        if($limit == -1){
+            $limit = 12546464646464646;
+        }
+        $query = $this
+                ->db
+                ->limit($limit,$start)
+                ->order_by('id',"desc")
+                ->get('books');  
+        $result = ($query->num_rows() > 0) ? $query->result() : FALSE;
+        return $result; 
+        
+    }
+    
+    public function books_search($limit,$start,$search){
+        if($limit == -1){
+            $limit = 12546464646464646;
+        }
+        $query = $this
+                ->db
+                ->like('other',$search)
+                ->or_like('book_no',$search)
+                ->or_like('book_title',$search)
+                ->or_like('isbn_no',$search)
+                ->or_like('subject',$search)
+                ->or_like('publish',$search)
+                ->or_like('tags',$search)
+                ->or_like('class',$search)
+                ->limit($limit,$start)
+                ->order_by('id',"asc")
+                //->join('inv_store', 'inv_store.store_id = books.category_store_id')
+                ->get('books');
+        $result = ($query->num_rows() > 0) ? $query->result() : FALSE;
+        return $result; 
+    }
+
+    public function books_search_count($search){
+        $query = $this
+                ->db
+                ->like('other',$search)
+                ->or_like('book_no',$search)
+                ->or_like('isbn_no',$search)
+                ->or_like('book_title',$search)
+                ->or_like('subject',$search)
+                ->or_like('publish',$search)
+                ->or_like('tags',$search)
+                ->or_like('class',$search)
+                ->get('books');
+    
+        return $query->num_rows();
+    }//Server side Datatables Methods End
 
 }

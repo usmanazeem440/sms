@@ -130,3 +130,8 @@ $(document).ready(function(){
     NProgress.start();
     setTimeout(function() { NProgress.done(); $('.fade').removeClass('out'); }, 1000);
 /*--nprogress--*/    
+
+function clearQueryString() {
+    const url = window.location.href.split('?')[0]; // Get base URL without query string
+    window.location.href = url; // Redirect to the base URL
+}

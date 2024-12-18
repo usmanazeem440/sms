@@ -1,5 +1,10 @@
 <?php
 $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+$book_title = isset($_GET['book_title']) ?  trim($_GET['book_title']) : '';
+$book_no = isset($_GET['book_no']) ?  trim($_GET['book_no']) : '';
+$author = isset($_GET['author']) ?  trim($_GET['author']) : '';
+$other = isset($_GET['other']) ?  trim($_GET['other']) : '';
+$subject = isset($_GET['subject']) ?  trim($_GET['subject']) : '';
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -15,7 +20,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
             <!-- left column -->
             <div class="col-md-12">
-                <div class="box box-primary">
+                <div class="box box-primary d-none">
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-search"></i> <?php echo $this->lang->line('select_criteria'); ?></h3>
                     </div>
@@ -23,48 +28,43 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="row">
-                                    <form role="form" action="<?php echo site_url('admin/book/getall') ?>" method="post" class="">
+                                    <form role="form" action="<?php echo site_url('admin/book/getall') ?>" method="get" class="">
                                         <?php echo $this->customlib->getCSRF(); ?>
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_by_book_title'); ?></label>
-                                                <input type="text" name="search_title" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_title'); ?>">
+                                                <input type="text" name="book_title" value="<?= $book_title ?>" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_title'); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_by_book_no'); ?></label>
-                                                <input type="text" name="search_book_no" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_no'); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label><?php echo $this->lang->line('search_by_book_isbn'); ?></label>
-                                                <input type="text" name="search_isbn" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_isbn'); ?>">
+                                                <input type="text" name="book_no" value="<?= $book_no;?>" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_no'); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_by_book_author'); ?></label>
-                                                <input type="text" name="search_author" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_author'); ?>">
+                                                <input type="text" name="author"  value="<?= $author ?>" class="form-control" placeholder="<?php echo $this->lang->line('search_by_book_author'); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_barcode'); ?></label>
-                                                <input type="text" name="search_barcode" class="form-control" placeholder="<?php echo $this->lang->line('search_barcode'); ?>">
+                                                <input type="text" name="other" value="<?= $other ?>" class="form-control" placeholder="<?php echo $this->lang->line('search_barcode'); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label><?php echo $this->lang->line('search_subject'); ?></label>
-                                                <input type="text" name="search_subject" class="form-control" placeholder="<?php echo $this->lang->line('search_subject'); ?>">
+                                                <input type="text" name="subject" value="<?= $subject ?>" class="form-control" placeholder="<?php echo $this->lang->line('search_subject'); ?>">
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <button type="submit" name="search" value="search_full" class="btn btn-primary btn-sm pull-right checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
+                                            <div class="form-group pull-right">
+                                                <button type="button" onclick="clearQueryString()" class="btn btn-primary btn-sm checkbox-toggle clear-filter"><i class="fa fa-eraser"></i> <?php echo ('Clear Filter'); ?></button>
+                                                <button type="submit" class="btn btn-primary btn-sm checkbox-toggle"><i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?></button>
                                             </div>
                                         </div>
                                     </form>
@@ -90,7 +90,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 
 
                             <div class="download_label"><?php echo $this->lang->line('book_list'); ?></div>
-                            <table id="" class="table table-striped table-bordered table-hover withoutPagination" cellspacing="0" width="100%">
+                            <table id="books" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th><?php echo $this->lang->line('barcode'); ?></th>
@@ -112,7 +112,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
+                                    <!-- <?php
                                     $count = 1;
                                     foreach ($listbook as $book) {
                                         ?>
@@ -136,7 +136,7 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                                 </div>
                                             </td>
                                             
-                                            <td class="mailbox-name"> <?php echo $book['isbn_no'] ?></td>
+                                             <td class="mailbox-name d-none"> <?php echo $book['isbn_no'] ?></td>
                                             <td class="mailbox-name"> <?php echo $book['publish'] ?></td>
                                             <td class="mailbox-name"> <?php echo $book['author'] ?></td>
                                             <td class="mailbox-name"><?php echo $book['subject'] ?></td>
@@ -161,10 +161,10 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
                                         <?php
                                         $count++;
                                     }
-                                    ?>
+                                    ?> -->
                                 </tbody>
                             </table><!-- /.table -->
-                            <?php echo $links;?>
+                            <?php //echo $links;?>
                         </div><!-- /.mail-box-messages -->
                     </div><!-- /.box-body -->
                     <div class="box-footer">
@@ -190,6 +190,56 @@ $currency_symbol = $this->customlib->getSchoolCurrencyFormat();
 </div><!-- /.content-wrapper -->
 <script type="text/javascript">
     $(document).ready(function () {
+
+            // Datatable Initialize End
+             var table = $('#books').DataTable({
+                "drawCallback": function(result) {
+                    $('.detail_popover').popover({
+                        placement: 'right',
+                        trigger: 'hover',
+                        container: 'body',
+                        html: true,
+                        content: function () {
+                            return $(this).closest('td').find('.fee_detail_popover').html();
+                        }
+                    });
+                },
+                "serverSide": true,
+                "pagingType": 'first_last_numbers',
+                //"stateSave": true,
+                "paging": true,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "order": [[ 0, "desc" ]],
+                // "dom": '<"top"f>rt<"main"<"bottom main-info"i><"main-lenght"l><"main-pagination"p>><"clear">',
+                "pageLength": 25,   
+                "ordering"   :false,
+                "processing": true,
+                "ajax":{
+                 "url": base_url +"admin/book/getallList",
+                 "dataType": "json",
+                 "type": "POST",
+                               },
+            "columns": [
+                      { "data": "other" },
+                      { "data": "book_no" },
+                      { "data": "book_title" },
+                      { "data": "isbn_no" },
+                      { "data": "publish" },
+                      { "data": "author" },
+                      { "data": "subject" },
+                      { "data": "location" },
+                      { "data": "class" },
+                      { "data": "tags" },
+                      { "data": "is_active" },
+                      { "data": "available" },
+                      { "data": "action" },
+                   ]     
+
+            });// Datatable Initialize End
+
+
+
+
         var date_format = '<?php echo $result = strtr($this->customlib->getSchoolDateFormat(), ['d' => 'dd', 'm' => 'mm', 'Y' => 'yyyy',]) ?>';
         $('#postdate').datepicker({
             // format: "dd-mm-yyyy",
