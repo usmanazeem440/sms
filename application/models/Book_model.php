@@ -238,6 +238,7 @@ class Book_model extends CI_Model {
                 ->db
                 ->like('other',$search)
                 ->or_like('book_no',$search)
+                ->or_like('author',$search)
                 ->or_like('book_title',$search)
                 ->or_like('isbn_no',$search)
                 ->or_like('subject',$search)
@@ -257,6 +258,7 @@ class Book_model extends CI_Model {
                 ->db
                 ->like('other',$search)
                 ->or_like('book_no',$search)
+                ->or_like('author',$search)
                 ->or_like('isbn_no',$search)
                 ->or_like('book_title',$search)
                 ->or_like('subject',$search)
