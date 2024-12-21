@@ -28,21 +28,39 @@ public function get_stock($id = ''){
 
         //$orderby = $_GET['orderby'] ?:
 
-        $query =  $this->db->select('*');
-        $this->db->from('store_books,student_session','classes');
-        $this->db->join('classes', 'student_session.class_id = classes.id');
-        $this->db->join('students', 'students.id = student_session.student_id');
-        if($id != '') {
+        // commented by usman
+        // $query =  $this->db->select('*');
+        // $this->db->from('store_books,student_session','classes');
+        // $this->db->join('classes', 'student_session.class_id = classes.id');
+        // $this->db->join('students', 'students.id = student_session.student_id');
+        // if($id != '') {
+        //     $this->db->where('student_id', $id);
+
+        // }
+        // $this->db->where('is_disabled', 0);
+        // $this->db->order_by('student_session.id', 'desc');
+        // commented by usman
+
+        $query = $this->db->select('classes.tag')
+            ->from('students')
+            ->join('student_session', 'students.id = student_session.student_id') // Join student_session
+            ->join('classes', 'student_session.class_id = classes.id'); // Join classes
+
+        if ($id != '') {
             $this->db->where('student_id', $id);
+        }
+
+        $this->db->where('students.is_active', 'yes');
+        $this->db->order_by('student_session.id','desc');
+        $queryRes = $this->db->get();
+        $res = $queryRes->result_array();
+
+        $tag=$res[0]['tag'];
+
+        if(isset($_COOKIE['usman'])) {
+        // dd($this->db->last_query(),'test',1);
 
         }
-        $this->db->where('is_disabled', 0);
-        // $this->db->order_by('student_session.id', 'desc');
-         $queryRes = $this->db->get();
-         $res = $queryRes->result_array();
-         $tag=$res[0]['Tag'];
-
-        // dd($this->db->last_query());
          // echo $tag; die();
 
         $query1 =  $this->db->select('*');
@@ -51,7 +69,9 @@ public function get_stock($id = ''){
         // $this->db->like('store_books.class',$tag);
         $queryRes1 = $this->db->get();
 
+        // dd($this->db->last_query(),'test',1);
         return $queryRes1->result_array();
+
         // $this->db->where('student_id', $id);
         //$this->db->where('store_books.id', );
         //$this->db->where('student_session.class_id ', $id);

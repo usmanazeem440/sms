@@ -86,7 +86,7 @@
                                         ?>
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr class="d-none">
                                     <td><strong><?php echo $this->lang->line('teacher_restricted_mode'); ?></strong></td>
                                     <td class="mailbox-name"> <?php
                                         if ($settinglist[0]['class_teacher'] == "yes") {
@@ -100,7 +100,7 @@
                                     <td><strong><?php echo $this->lang->line('language'); ?></strong></td>
                                     <td class="mailbox-name"> <?php echo $settinglist[0]['language'] ?></td>
                                 </tr>
-                                <tr>
+                                <tr class="d-none">
                                     <td><strong><?php echo $this->lang->line('language_rtl_text_mode'); ?></strong></td>
                                     <td class="mailbox-name"> <?php echo ucfirst($settinglist[0]['is_rtl']); ?></td>
                                 </tr>
@@ -146,7 +146,7 @@
                                     <td class="mailbox-name"> <?php echo $settinglist[0]['sales_tax'] ?> %</td>
                                 </tr>
 								
-								<tr>
+								<tr class="d-none">
                                     <td><strong><?php echo $this->lang->line('previous_session_balance_tax'); ?></strong></td>
                                     <td class="mailbox-name"> <?php
                                         if ($settinglist[0]['previous_session_balance_tax'] == "enabled") {
@@ -160,13 +160,13 @@
                             </table>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="row">
+                        <div class="row d-none">
 
                             <hr style="width: 98.9%; margin: 32px auto 20px;" />
                             <div class="col-md-12 col-sm-12">
                                 <label for="input-type"><?php echo $this->lang->line('current_theme'); ?></label></div>
                         </div>
-                        <div class="row">
+                        <div class="row d-none">
                             <div class="col-md-3 col-sm-3 col-xs-6">
                                 <img class="<?php echo ($settinglist[0]['theme'] == "default.jpg") ? "radioactive" : ""; ?> img-responsive radioborder" src="<?php echo base_url(); ?>backend/images/default.jpg">
                             </div>
@@ -281,7 +281,7 @@
                             </select>
                             <span class="text-danger"><?php echo form_error('session_id'); ?></span>
                         </div>
-                        <div class="form-group  col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="form-group  col-xs-6 col-sm-6 col-md-6 col-lg-6 d-none">
                             <label for="IsSmallBusiness"><?php echo $this->lang->line('teacher_restricted_mode'); ?></label>
                             <div class="clearfix"></div>
                             <label class="radio-inline">
@@ -311,7 +311,7 @@
                         </div>
 
 
-                        <div class="form-group  col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                        <div class="form-group  col-xs-12 col-sm-12 col-md-12 col-lg-6 d-none">
                             <label for="IsSmallBusiness"><?php echo $this->lang->line('language_rtl_text_mode'); ?></label>
                             <div class="clearfix"></div>
                             <label class="radio-inline">
@@ -406,7 +406,7 @@
                             <span class="text-danger"><?php echo form_error('sales_tax'); ?></span>
                         </div>
 
-						<div class="form-group  col-xs-12 col-sm-12 col-md-12 col-lg-6">
+						<div class="form-group  col-xs-12 col-sm-12 col-md-12 col-lg-6 d-none">
                             <label for="IsSmallBusiness"><?php echo $this->lang->line('previous_session_balance_tax'); ?></label>
                             <div class="clearfix"></div>
                             <label class="radio-inline">

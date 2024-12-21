@@ -22,7 +22,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1"><?php echo $this->lang->line('search_by_student'); ?></label><small class="req"> *</small>
+                                        <label for="exampleInputEmail1">
+                                            <?php //echo $this->lang->line('search_by_student_name'); ?>
+                                            Search By Student    
+                                        </label><small class="req"> *</small>
                                         <input type="text" name="parent_name" value="<?= $search_text ?>" class="form-control" placeholder="Search By Student Name, Father Name, Roll Number, Enroll Number  Etc."/>
                                     </div>
                                 </div>
