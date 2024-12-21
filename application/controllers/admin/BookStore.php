@@ -80,11 +80,13 @@ class BookStore extends Admin_Controller {
 
     public function place_orders(){
         
-         $this->session->set_userdata('top_menu', 'store_orders');
-          $this->session->set_userdata('sub_menu', 'admin/Store/order');
+        $this->session->set_userdata('top_menu', 'store_orders');
+        $this->session->set_userdata('sub_menu', 'admin/Store/order');
         
+        $data['search_text'] = '';
+
         $this->load->view('layout/header');
-        $this->load->view('book-store/place-orders-view');
+        $this->load->view('book-store/place-orders-view', $data);
         $this->load->view('layout/footer');
     }
 
@@ -92,6 +94,7 @@ class BookStore extends Admin_Controller {
 
     public function searchParent(){
         $parentName = $this->input->post('parent_name');
+        $data['search_text'] = $parentName;
      //   echo $parentName;
         $data['students'] = $this->student_model->searchStudent($parentName);
      // echo "<pre>";  print_r( $data['students']);exit;
@@ -193,6 +196,7 @@ class BookStore extends Admin_Controller {
         
         $data["previous_orders"] = $this->store_orders->getOrderList($id);
         $data["stock"] = $this->book_store->get_stock($id);
+        // dd($data['stock']);
         //echo "<pre>";  print_r($data["stock"]);exit;
 
 

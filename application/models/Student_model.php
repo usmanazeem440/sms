@@ -234,16 +234,19 @@ class Student_model extends CI_Model {
 	    public function searchStudent($searchterm){
 
         
-		$this->db->select('id,admission_no,firstname, birth_place, gender, dob')->from('students');
+		$this->db->select('id,admission_no,firstname, lastname, father_name, birth_place, gender, dob')->from('students');
 		$this->db->group_start();
         $this->db->like('students.father_name', $searchterm);
-         $this->db->or_like('students.guardian_name', $searchterm);
+         // $this->db->or_like('students.guardian_name', $searchterm);
         $this->db->or_like('students.firstname', $searchterm);
-         //$this->db->or_like('students.lastname', $searchterm);
-         $this->db->or_like('students.admission_no', $searchterm);
-         $this->db->or_like('students.id', $searchterm);
-		 $this->db->group_end();
-		 $this->db->where('students.is_active', 'yes');
+        $this->db->or_like('students.lastname', $searchterm);
+
+        $this->db->or_where("CONCAT(students.firstname, ' ', students.lastname) LIKE '%$searchterm%'", NULL, FALSE);
+
+        $this->db->or_like('students.admission_no', $searchterm);
+        $this->db->or_like('students.id', $searchterm);
+        $this->db->group_end();
+        $this->db->where('students.is_active', 'yes');
         //$this->db->group_by('students.is_active', 'yes');
         $query = $this->db->get();
 		//echo $this->db->last_query();

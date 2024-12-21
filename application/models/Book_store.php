@@ -29,7 +29,7 @@ public function get_stock($id = ''){
         //$orderby = $_GET['orderby'] ?:
 
         $query =  $this->db->select('*');
-        $this->db->from('store_books,student_session', 'classes');
+        $this->db->from('store_books,student_session','classes');
         $this->db->join('classes', 'student_session.class_id = classes.id');
         $this->db->join('students', 'students.id = student_session.student_id');
         if($id != '') {
@@ -37,16 +37,20 @@ public function get_stock($id = ''){
 
         }
         $this->db->where('is_disabled', 0);
+        // $this->db->order_by('student_session.id', 'desc');
          $queryRes = $this->db->get();
          $res = $queryRes->result_array();
          $tag=$res[0]['Tag'];
 
-         //echo $tag; die();
+        // dd($this->db->last_query());
+         // echo $tag; die();
 
         $query1 =  $this->db->select('*');
         $this->db->from('store_books');
-        $this->db->like('store_books.class',$tag);
+        $this->db->where("store_books.class = '".$tag."' OR store_books.class LIKE '".$tag.",%' OR store_books.class LIKE '%,".$tag.",%' OR store_books.class LIKE '%,".$tag."'", NULL, FALSE);
+        // $this->db->like('store_books.class',$tag);
         $queryRes1 = $this->db->get();
+
         return $queryRes1->result_array();
         // $this->db->where('student_id', $id);
         //$this->db->where('store_books.id', );
