@@ -200,7 +200,7 @@ class Book extends Admin_Controller {
                 $nestedData['tags'] = $book->tags;
                 $nestedData['is_active'] = $book->is_active;
                 $nestedData['available'] = $book->available;
-                $nestedData['action'] = "<div class='mailbox-date no-print text text-right'>".$action."";
+                $nestedData['action'] = "<div class='mailbox-date no-print text text-right'>".$action."</div>";
 
                 $data[] = $nestedData;
 

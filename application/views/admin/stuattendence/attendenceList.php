@@ -214,7 +214,7 @@
                                     <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
                                     <input type="hidden" name="section_id" value="<?php echo $section_id; ?>">
                                     <input type="hidden" name="date" value="<?php echo $date; ?>">
-                                    <input type="hidden" name="subject_id" value="<?php echo $subject_id; ?>"
+                                    <input type="hidden" name="subject_id" value="<?php echo $subject_id; ?>">
                                     <div class="table-responsive ptt10">
                                         <table class="table table-hover table-striped example">
                                             <thead>

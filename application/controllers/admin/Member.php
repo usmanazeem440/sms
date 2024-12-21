@@ -11,7 +11,7 @@ class Member extends Admin_Controller {
 
     }
 
-    public function index() {
+    public function index_old() {
         if (!$this->rbac->hasPrivilege('issue_return', 'can_view')) {
             access_denied();
         }
@@ -86,6 +86,92 @@ class Member extends Admin_Controller {
         $this->load->view('layout/header');
         $this->load->view('admin/librarian/index', $data);
         $this->load->view('layout/footer');
+    }
+
+    public function index() {
+        if (!$this->rbac->hasPrivilege('issue_return', 'can_view')) {
+            access_denied();
+        }
+        $this->session->set_userdata('top_menu', 'Library');
+        $this->session->set_userdata('sub_menu', 'member/index');
+        $data['title'] = 'Member';
+        $data['title_list'] = 'Members';
+
+        $this->load->view('layout/header');
+        $this->load->view('admin/librarian/index', $data);
+        $this->load->view('layout/footer');
+    }
+
+    public function getMembersList(){
+        $limit = $this->input->post('length');
+        $start = $this->input->post('start');
+        
+
+        $totalData = $this->librarymember_model->get(true, false, false);
+
+        $totalFiltered = $totalData;
+
+        if(empty($this->input->post('search')['value']))
+        {
+            $members = $this->librarymember_model->get(false);
+            // dd($members);
+        } else {
+            $search = trim($this->input->post('search')['value']); 
+
+            $members =  $this->librarymember_model->get(false, $limit,$start,$search);
+
+            $totalFiltered = $this->librarymember_model->get(true,false,false, $search);
+        }
+
+        $data = array();
+        if(!empty($members))
+        {
+            foreach ($members as $member)
+              {
+                $action = '';
+                // if ($this->rbac->hasPrivilege('books', 'can_edit')) {
+                // dd($member);
+                    $action .= '<a href="'.base_url('admin/member/issue/'.$member->lib_member_id).'" class="btn btn-default btn-xs"  data-toggle="tooltip" title="'.$this->lang->line("issue_return").'">
+                                    <i class="fa fa-sign-out"></i>
+                                </a>';
+                // }
+
+                if ($member->member_type == "student") {
+                    $name = $member->firstname . " " . $member->lastname;
+                    $class_name = $member->class_name;
+                    $section = $member->section;
+                } else {
+                    // dd($member);
+                    $email = $member->teacher_email;
+                    $name = $member->teacher_name;
+                    $sex = $member->teacher_sex;
+                    $class_name = $member->class_name;
+                    $section = $member->section;
+                }
+
+                $nestedData['member_id'] = $member->lib_member_id;
+                $nestedData['library_card_no'] = $member->library_card_no;
+
+                $nestedData['admission_no'] = $member->admission_no;
+                $nestedData['name'] = $name;
+                $nestedData['member_type'] = $this->lang->line($member->member_type);
+                $nestedData['class'] = $class_name." ( ".$section." ) ";
+                $nestedData['action'] = "<div class='mailbox-date pull-right'>".$action."</div>";
+
+                $data[] = $nestedData;
+
+              }
+        }
+
+        $json_data = array(
+                    "draw"            => intval($this->input->post('draw')),
+                    "recordsTotal"    => intval($totalData),
+                    "recordsFiltered" => intval($totalFiltered),
+                    "data"            => $data
+                    );
+
+        echo json_encode($json_data);
+
     }
     public function ajax(){
         $config = array();
