@@ -52,36 +52,43 @@
                             <thead>
                             <tr>
 
-                                <th><?php echo $this->lang->line('name'); ?></th>
+                                <th><?php echo $this->lang->line('admission_no'); ?></th>
+                                <th><?php echo $this->lang->line('guardian_id'); ?></th>
+                                <th>Birth Place</th>
+                                <th><?php echo $this->lang->line('student_name'); ?></th>
+                                <th><?php echo $this->lang->line('class'); ?></th>
                                 <th><?php echo $this->lang->line('father_name'); ?></th>
-                                <th><?php echo $this->lang->line('birth_place'); ?></th>
-                                   <th><?php echo $this->lang->line('gender'); ?></th>
-                                <th><?php echo $this->lang->line('Dob'); ?></th>
+                                <th><?php echo $this->lang->line('date_of_birth'); ?></th>
+                                <th><?php echo $this->lang->line('gender'); ?></th>
+                                <th><?php echo $this->lang->line('category'); ?></th>
+                                <th><?php echo $this->lang->line('mobile_no'); ?></th>
                                 <th class="text text-right"><?php echo $this->lang->line('action'); ?> </th>
                             </tr>
                             </thead>
                             <tbody>
                                 <?php  foreach($students as $student){ ?>
                                 <tr>
-                                    <td class="text">
-                                        <?php echo $student->firstname.' '. $student->lastname ?>
+                                    <td><?php echo $student['admission_no']; ?></td>
+                                     <td><?php echo $student['guardian_id']; ?></td>
+                                    <td><?php if($student['birth_place'] != null){ echo $student['birth_place']; } else { echo "N/A";}  ?></td>
+                                    <td>
+                                        <a href="<?php echo base_url(); ?>student/view/<?php echo $student['id']; ?>"><?php echo $student['firstname'] . " " . $student['lastname']; ?>
+                                        </a>
                                     </td>
-                                    <td  class="text">
-                                        <?php echo $student->father_name ?>
-                                    </td>
-                                    <td  class="text">
-                                        <?php echo $student->birth_place ?>
-                                    </td>
-                                    <td  class="text">
-                                        <?php echo $student->gender ?>
-                                    </td>
-                                    <td  class="text">
-                                        <?php echo $student->dob ?>
-                                    </td>
-                                    <td  class="text text-right">
-                                        <a href="<?php echo site_url('admin/BookStore/placeOrderByStudent/').$student->id;?>"  class="btn btn-xs btn-info myCollectFeeBtn " title="<?php echo $this->lang->line('std_place_order'); ?>"> <?php echo $this->lang->line('std_place_order'); ?> </a>
+                                    <td><?php echo $student['class'] . "(" . $student['section'] . ")" ?></td>
+                                    <td><?php echo $student['father_name']; ?></td>
+                                    <td><?php  if($student["dob"] != null)
+                                    { echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($student['dob'])) ; }?></td>
+                                    <td><?php echo $student['gender']; ?></td>
+                                    <td><?php echo $student['category']; ?></td>
+                                    <td class="phone"><?php echo $student['mobileno']; ?></td>
+                                    <td class="text text-right">
+                                        <a href="<?php echo site_url('admin/BookStore/placeOrderByStudent/') . $student['id']; ?>" class="btn btn-xs btn-info myCollectFeeBtn" title="<?php echo $this->lang->line('std_place_order'); ?>">
+                                            <?php echo $this->lang->line('std_place_order'); ?>
+                                        </a>
                                     </td>
                                 </tr>
+
                             <?php }?>
                             </tbody>
                         </table>

@@ -152,10 +152,18 @@ class Member extends Admin_Controller {
                 $nestedData['member_id'] = $member->lib_member_id;
                 $nestedData['library_card_no'] = $member->library_card_no;
 
-                $nestedData['admission_no'] = $member->admission_no;
+                if ($member->member_type == "student") {
+                    $nestedData['admission_no'] = $member->admission_no;
+                } else {   
+                    $nestedData['class'] = "N/A";
+                }
                 $nestedData['name'] = $name;
                 $nestedData['member_type'] = $this->lang->line($member->member_type);
-                $nestedData['class'] = $class_name." ( ".$section." ) ";
+                if ($member->member_type == "student") {
+                    $nestedData['class'] = $class_name." (".$section.") ";
+                } else {
+                    $nestedData['class'] = "N/A";
+                }
                 $nestedData['action'] = "<div class='mailbox-date pull-right'>".$action."</div>";
 
                 $data[] = $nestedData;
@@ -227,6 +235,7 @@ class Member extends Admin_Controller {
         $this->session->set_userdata('sub_menu', 'member/index');
         $data['title'] = 'Member';
         $data['title_list'] = 'Members';
+        $data['currency_symbol'] = $this->setting[0]['currency_symbol'];
         $memberList = $this->librarymember_model->getByMemberID($id);
         $data['memberList'] = $memberList;
         $issued_books = $this->bookissue_model->getMemberBooks($id);
@@ -317,11 +326,11 @@ class Member extends Admin_Controller {
         $available = "yes";
         $this->book_model->update_book_by_id($barcode_id,$available);
         //book_issues table update
-               $data = array(
-            'id' => $id,
-            'is_returned' => 1,
-            'return_date' => date("Y-m-d")
-        );
+           $data = array(
+                'id' => $id,
+                'is_returned' => 1,
+                'returned_at' => date("Y-m-d")
+            );
         $this->bookissue_model->update($data);
 
 

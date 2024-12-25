@@ -108,9 +108,10 @@ class Bookissue_model extends CI_Model {
 
     public function getMemberBooks($member_id) {
 
-        $this->db->select('book_issues.id,book_issues.return_date,book_issues.issue_date,book_issues.is_returned,books.book_title,books.book_no,books.author')->from('book_issues');
+        $this->db->select('book_issues.id,book_issues.return_date,book_issues.issue_date, returned_at,book_issues.is_returned,books.book_title,books.book_no,books.author, book_issues_fine.balance as fine, book_issues_fine.status as fine_status')->from('book_issues');
 
         $this->db->join('books', 'books.id = book_issues.book_id', 'left');
+        $this->db->join('book_issues_fine', 'book_issues_fine.book_issues_id = book_issues.id', 'left');
 
         if ($member_id != null) {
 
@@ -180,10 +181,10 @@ class Bookissue_model extends CI_Model {
     public function add_fine($id,$days,$balance){
         
         $data = array(
-        'book_issues_id' => $id,
-        'days'           => $days,
-        'balance'        => $balance
-         );
+            'book_issues_id' => $id,
+            'days'           => $days,
+            'balance'        => $balance
+        );
         
         $this->db->insert('book_issues_fine', $data);
         return $this->db->insert_id();

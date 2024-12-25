@@ -234,7 +234,13 @@ class Student_model extends CI_Model {
 	    public function searchStudent($searchterm){
 
         
-		$this->db->select('id,admission_no,firstname, lastname, father_name, birth_place, gender, dob')->from('students');
+		$this->db->select('students.id,admission_no,firstname, lastname, father_name, birth_place, gender, dob,classes.class,sections.section, guardian_id')->from('students');
+
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+        $this->db->join('classes', 'student_session.class_id = classes.id');
+        $this->db->join('sections', 'sections.id = student_session.section_id');
+
+
 		$this->db->group_start();
         $this->db->like('students.father_name', $searchterm);
          // $this->db->or_like('students.guardian_name', $searchterm);

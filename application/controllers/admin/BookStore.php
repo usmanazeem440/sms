@@ -96,7 +96,7 @@ class BookStore extends Admin_Controller {
         $parentName = $this->input->post('parent_name');
         $data['search_text'] = $parentName;
      //   echo $parentName;
-        $data['students'] = $this->student_model->searchStudent($parentName);
+        $data['students'] = $this->student_model->searchFullText($parentName);
      // echo "<pre>";  print_r( $data['students']);exit;
         $this->load->view('layout/header');
         $this->load->view('book-store/place-orders-view', $data);

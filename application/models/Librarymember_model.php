@@ -7,6 +7,8 @@ class Librarymember_model extends CI_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+        $this->current_date = $this->setting_model->getDateYmd();
     }
 
     /**
@@ -117,30 +119,34 @@ class Librarymember_model extends CI_Model {
         $this->db->join('students', 'libarary_members.member_id = students.id', 'inner');
 
         // Subquery to get the latest session along with class_id and section_id
-        $latest_session_subquery = "
-            SELECT 
-                student_id, 
-                MAX(id) AS latest_session_id, 
-                class_id, 
-                section_id
-            FROM student_session
-            GROUP BY student_id
-        ";
+        // $latest_session_subquery = "
+        //     SELECT 
+        //         student_id, 
+        //         MAX(id) AS latest_session_id, 
+        //         class_id, 
+        //         section_id
+        //     FROM student_session
+        //     GROUP BY student_id
+        // ";
 
-        $this->db->join("($latest_session_subquery) latest_session", 'latest_session.student_id = students.id', 'inner');
-        $this->db->join('classes', 'latest_session.class_id = classes.id', 'inner');
-        $this->db->join('sections', 'latest_session.section_id = sections.id', 'inner');
+        $this->db->join('student_session', 'student_session.student_id = students.id');
+
+        // $this->db->join("($latest_session_subquery) latest_session", 'latest_session.student_id = students.id', 'inner');
+        $this->db->join('classes', 'student_session.class_id = classes.id', 'inner');
+        $this->db->join('sections', 'student_session.section_id = sections.id', 'inner');
 
         // $this->db->join('classes', 'student_session.class_id = classes.id', 'inner');
         // $this->db->join('sections', 'sections.id = student_session.section_id', 'inner');
         $this->db->where('libarary_members.member_type', 'student');
+        $this->db->where('student_session.session_id', $this->current_session);
         if (!empty($search)) {
             $this->db->group_start();
             $this->db->like('libarary_members.library_card_no', $search);
             $this->db->or_like('admission_no', $search);
             $this->db->or_like('libarary_members.id', $search);
             $this->db->or_like('libarary_members.member_type', $search);
-            $this->db->or_where("CONCAT(classes.class, ' ( ', sections.section, ' )') LIKE '%$search%'", NULL, FALSE);
+            $this->db->or_where("CONCAT(classes.class, ' (', sections.section, ')') LIKE '%$search%'", NULL, FALSE);
+            $this->db->or_where("CONCAT(classes.class, '(', sections.section, ')') LIKE '%$search%'", NULL, FALSE);
 
             // $this->db->or_where("CONCAT(classes.class, ' ', sections.section) LIKE '%$search%'", NULL, FALSE);
             $this->db->or_where("CONCAT(students.firstname, ' ', students.lastname) LIKE '%$search%'", NULL, FALSE);

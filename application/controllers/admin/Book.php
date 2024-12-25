@@ -200,6 +200,23 @@ class Book extends Admin_Controller {
                 $nestedData['tags'] = $book->tags;
                 $nestedData['is_active'] = $book->is_active;
                 $nestedData['available'] = $book->available;
+
+                $query = $this->db->select('member_id')->where('book_id', $book->id)->limit(1)->order_by('id',"desc")->get('book_issues');  
+                $member_id = ($query->num_rows() > 0) ? $query->row()->member_id : FALSE;
+                // dd($this->db->last_query());
+
+
+                if (!$member_id) {
+                    $nestedData['book_issued'] = 'No';
+                } else {
+                    $link = base_url()."admin/member/issue/".$member_id;
+                    $nestedData['book_issued'] = '<a href="'.$link.'" target="_blank" data-toggle="popover" class="detail_popover">'. $member_id. '</a>
+                        <div class="fee_detail_popover" style="display: none">';
+                    $nestedData['book_issued'] .= '<p class="text text-info">Book issued to library member '.$member_id.'</p>';
+                    $nestedData['book_issued'] .= '</div>';
+                }
+
+
                 $nestedData['action'] = "<div class='mailbox-date no-print text text-right'>".$action."</div>";
 
                 $data[] = $nestedData;

@@ -5,6 +5,12 @@ if (!defined('BASEPATH'))
 
 class Book_store extends CI_Model {
     
+    public function __construct() {
+        parent::__construct();
+        $this->current_session = $this->setting_model->getCurrentSession();
+        $this->current_date = $this->setting_model->getDateYmd();
+    }
+    
     public function add_book($data){
         $query = $this->db->insert('store_books', $data);
         return $this->db->affected_rows();
@@ -50,8 +56,9 @@ public function get_stock($id = ''){
             $this->db->where('student_id', $id);
         }
 
+        $this->db->where('student_session.session_id', $this->current_session);
         $this->db->where('students.is_active', 'yes');
-        $this->db->order_by('student_session.id','desc');
+        // $this->db->order_by('student_session.id','desc');
         $queryRes = $this->db->get();
         $res = $queryRes->result_array();
 

@@ -50,3 +50,6 @@
     color: #a8a8a8;
     margin-bottom: 2px;
 }
+.has-error {
+    border-color: red;
+}

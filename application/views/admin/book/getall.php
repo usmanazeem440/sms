@@ -108,6 +108,7 @@ $subject = isset($_GET['subject']) ?  trim($_GET['subject']) : '';
                                         <th><?php echo $this->lang->line('tags'); ?></th>
                                         <th><?php echo $this->lang->line('active'); ?></th>
                                         <th><?php echo $this->lang->line('available'); ?></th>
+                                        <th><?php echo ('issued'); ?></th>
                                         <th class="no-print text text-right"><?php echo $this->lang->line('action'); ?></th>
                                     </tr>
                                 </thead>
@@ -232,6 +233,7 @@ $subject = isset($_GET['subject']) ?  trim($_GET['subject']) : '';
                       { "data": "tags" },
                       { "data": "is_active" },
                       { "data": "available" },
+                      { "data": "book_issued" },
                       { "data": "action" },
                    ]     
 

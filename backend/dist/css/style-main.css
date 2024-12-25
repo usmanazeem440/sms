@@ -6448,6 +6448,9 @@ tr.dark-gray td {
 .bg-danger {
     background-color: #f2dede !important;
 }
+.bg-success {
+    background-color: #daf2e4 !important;
+}
 
 .width85 {
     width: 85px !important;
