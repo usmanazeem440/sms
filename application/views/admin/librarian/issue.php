@@ -36,14 +36,14 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="box-footer">
+                            <div class="box-footer pr-0 pb-0">
                                 <button type="submit" class="btn btn-sm btn-info pull-right search">
                                     <i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?>
                                 </button>
                             </div>
                         </div>
                     </form>
-                    <hr>
+                    
                     <form id="form1" action="<?php echo site_url('admin/member/issue/' . $memberList->lib_member_id); ?>" method="post" accept-charset="utf-8">
                          <div class="box-body">
                              <?php
@@ -88,7 +88,7 @@
                         </div>
                         <!-- /.box-body -->
 
-                        <div class="box-footer">
+                        <div class="box-footer pr-0">
                             <button type="submit" class="btn btn-info btn-sm pull-right issue-book">
                                 <i class="fa fa-mail-forward"></i>
                                 <?php echo $this->lang->line('issue_book'); ?> 
