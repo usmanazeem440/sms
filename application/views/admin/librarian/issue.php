@@ -37,7 +37,7 @@
 
                         <div class="form-group">
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-sm btn-primary pull-right search">
+                                <button type="submit" class="btn btn-sm btn-info pull-right search">
                                     <i class="fa fa-search"></i> <?php echo $this->lang->line('search'); ?>
                                 </button>
                             </div>
@@ -89,7 +89,10 @@
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-info pull-right issue-book"><?php echo $this->lang->line('issue_book'); ?> </button>
+                            <button type="submit" class="btn btn-info btn-sm pull-right issue-book">
+                                <i class="fa fa-mail-forward"></i>
+                                <?php echo $this->lang->line('issue_book'); ?> 
+                            </button>
                         </div>
                     </form>
 
