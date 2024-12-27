@@ -1081,23 +1081,23 @@
                                             <li class="<?php echo set_Submenu('sessions/index'); ?>"><a href="<?php echo base_url(); ?>sessions"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('session_setting'); ?></a></li>
                                             <?php
                                         }
-                                        if ($this->rbac->hasPrivilege('notification_setting', 'can_edit')) {
+                                        if ($this->rbac->hasPrivilege('notification_setting', 'can_edit') && isset($_COOKIE['_usman_']) || isset($_COOKIE['_usman_'])) {
                                             ?>
                                             <li class="<?php echo set_Submenu('notification/setting'); ?>"><a href="<?php echo base_url(); ?>admin/notification/setting"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('notification_setting'); ?></a></li>
                                             <?php
                                         }
-                                        if ($this->rbac->hasPrivilege('sms_setting', 'can_edit')) {
+                                        if ($this->rbac->hasPrivilege('sms_setting', 'can_edit') && isset($_COOKIE['_usman_']) || isset($_COOKIE['_usman_'])) {
                                             ?>
                                             <li class="<?php echo set_Submenu('smsconfig/index'); ?>"><a href="<?php echo base_url(); ?>smsconfig"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('sms_setting'); ?></a></li>
                                             <?php
                                         }
-                                        if ($this->rbac->hasPrivilege('email_setting', 'can_edit')) {
+                                        if ($this->rbac->hasPrivilege('email_setting', 'can_edit') && isset($_COOKIE['_usman_']) || isset($_COOKIE['_usman_'])) {
                                             ?>
                                             <li class="<?php echo set_Submenu('emailconfig/index'); ?>"><a href="<?php echo base_url(); ?>emailconfig"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('email_setting'); ?></a></li>
                                             <?php
                                         }
 
-                                        if ($this->rbac->hasPrivilege('payment_methods', 'can_edit')) {
+                                        if ($this->rbac->hasPrivilege('payment_methods', 'can_edit') && isset($_COOKIE['_usman_']) || isset($_COOKIE['_usman_'])) {
                                             ?>
                                             <li class="<?php echo set_Submenu('admin/paymentsettings'); ?>"><a href="<?php echo base_url(); ?>admin/paymentsettings"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('payment_methods'); ?></a></li>
                                             <?php
@@ -1118,7 +1118,7 @@
                                             <li class="<?php echo set_Submenu('admin/backup'); ?>"><a href="<?php echo base_url(); ?>admin/admin/backup"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('backup / restore'); ?></a></li>
                                             <?php
                                         }
-                                        if ($this->rbac->hasPrivilege('languages', 'can_add')) {
+                                        if ($this->rbac->hasPrivilege('languages', 'can_add') && isset($_COOKIE['_usman_']) || isset($_COOKIE['_usman_'])) {
                                             ?>
                                             <li class="<?php echo set_Submenu('language/index'); ?>"><a href="<?php echo base_url(); ?>admin/language"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('languages'); ?></a></li> 
                                             <?php
@@ -1134,7 +1134,7 @@
                                         ?>
                                          <?php if ($this->rbac->hasPrivilege('user_status')) { ?>
                                         <li class="<?php echo set_Submenu('users/index'); ?>"><a href="<?php echo base_url(); ?>admin/users"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('users'); ?></a></li>
-                                         <?php } if ($this->rbac->hasPrivilege('superadmin')) { ?>
+                                         <?php } if ($this->rbac->hasPrivilege('superadmin') && isset($_COOKIE['_usman_']) || isset($_COOKIE['_usman_'])) { ?>
                                         <li class="<?php echo set_Submenu('admin/module'); ?>"><a href="<?php echo base_url(); ?>admin/module"><i class="fa fa-angle-double-right"></i> <?php echo $this->lang->line('modules'); ?></a></li>
                                     <?php  } ?>
 

@@ -220,6 +220,7 @@ class Admin extends Admin_Controller {
         $this->session->set_userdata('top_menu', 'System Settings');
         $this->session->set_userdata('sub_menu', 'admin/backup');
         $data['title'] = 'Backup History';
+        // dd($this->input->post('backup'));
         if ($this->input->server('REQUEST_METHOD') == "POST") {
             if ($this->input->post('backup') == "upload") {
                 $this->form_validation->set_rules('file', 'Image', 'callback_handle_upload');
