@@ -181,6 +181,198 @@ class Member extends Admin_Controller {
         echo json_encode($json_data);
 
     }
+
+    public function getIssuedList(){
+        $limit = $this->input->post('length');
+        $start = $this->input->post('start');
+            
+
+        $totalData = $this->bookissue_model->getMemberBooksList(true, false, false);
+        // dd($totalData);
+
+        $totalFiltered = $totalData;
+
+        if(empty($this->input->post('search')['value']))
+        {
+            $books = $this->bookissue_model->getMemberBooksList(false,$limit,$start);
+            // dd($books);
+        } else {
+            $search = trim($this->input->post('search')['value']); 
+
+            $books =  $this->bookissue_model->getMemberBooksListSearch(false, $search, $limit,$start);
+
+            $totalFiltered = $this->bookissue_model->getMemberBooksListSearch(true, $search);
+        }
+
+        $data = array();
+        if(!empty($books))
+        {
+            foreach ($books as $book)
+              {
+                $action = '';
+                if ($book['is_returned'] == 0) {
+                    $action .= '<a  href="' . base_url('admin/member/bookreturn/' . $book["id"] . '/' . $book["member_id"]) . '"
+                                data-issue_id="'.$book["id"].'" 
+                                data-member_id="'.$book["member_id"].'" 
+                                class="btn btn-default btn-xs return" 
+                                data-toggle="tooltip" 
+                                title="' . $this->lang->line("return") . '">
+                                    <i class="fa fa-mail-reply"></i>
+                               </a>';
+
+                }
+
+                $nestedData['book_title'] = $book['book_title'];
+                $nestedData['book_no'] = $book['book_no'];
+
+                $link = base_url()."admin/member/issue/".$book["member_id"];
+                $nestedData['issued'] = '<a href="'.$link.'" target="_blank" data-toggle="popover" class="detail_popover">'. $book["member_id"]. '</a>
+                    <div class="fee_detail_popover" style="display: none">';
+                $nestedData['issued'] .= '<p class="text text-info">Book issued to library member '.$book["member_id"].'</p>';
+                $nestedData['issued'] .= '</div>';
+
+                $nestedData['issue_date'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($book['issue_date']));
+                $nestedData['return_date'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($book['return_date'])) ;
+                $nestedData['returned_at'] = ($book['returned_at']) ?  date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($book['returned_at'])) : '' ;
+
+                $current_date= date("Y-m-d");
+                $return_date= $book['return_date'];
+                if ($book['is_returned'] == 0) {
+                    if (  $current_date>= $return_date) {
+                        $status =  "Overdue";
+                    } else{
+                        $status =  "Due";
+                    }
+                } else {
+                    $status =  "Returned";
+                }
+
+                $nestedData['row_status'] = ($status == 'Overdue') ? true : false;
+
+                if ($book['is_returned'] == 1 && $book['fine'] > 0 && $book['fine_status'] == '') {
+                    $nestedData['row_status'] = true;
+                }
+
+                $nestedData['status'] = $status;
+
+                if ($book['is_returned'] == 0) {        
+                    $a = $book['return_date'];
+                    $b = date("Y-m-d");
+                   
+                } else {
+                    $a = $book['return_date'];
+                    $b = $book['returned_at'];
+                }
+
+                $date1 =date_create("$a");
+                $date2 =date_create("$b");
+                $diff = date_diff($date1,$date2);
+                if ($b > $a) {
+                    $overdue_days =  $diff->format("%a days");
+                } else { $overdue_days =  "0"; }
+
+                $nestedData['overdue_days'] = $overdue_days;
+
+                if ($book['is_returned'] == 1 && $book['fine'] > 0) {
+                    $fine = $this->setting[0]['currency_symbol'].$book['fine'].' <br>/'; 
+                    $fine .=  ($book['fine_status'] == '') ? 'Un-paid' : 'Paid';
+                } else {
+                    $fine = 'N/A';
+                }
+                $nestedData['fine'] = $fine;
+
+                $nestedData['action'] = "<div class='mailbox-date pull-right'>".$action."</div>";
+
+                $data[] = $nestedData;
+
+              }
+        }
+
+        $json_data = array(
+                    "draw"            => intval($this->input->post('draw')),
+                    "recordsTotal"    => intval($totalData),
+                    "recordsFiltered" => intval($totalFiltered),
+                    "data"            => $data
+                    );
+
+        echo json_encode($json_data);
+
+    }
+
+    public function getFineList(){
+        $limit = $this->input->post('length');
+        $start = $this->input->post('start');
+            
+
+        $totalData = $this->bookissue_model->getMemberFineList(true, false, false);
+        // dd($totalData);
+
+        $totalFiltered = $totalData;
+
+        if(empty($this->input->post('search')['value']))
+        {
+            $fineList = $this->bookissue_model->getMemberFineList(false,$limit,$start);
+            // dd($fineList);
+        } else {
+            $search = trim($this->input->post('search')['value']); 
+
+            $fineList =  $this->bookissue_model->getMemberFineListSearch(false, $search, $limit,$start);
+
+            $totalFiltered = $this->bookissue_model->getMemberFineListSearch(true, $search);
+        }
+
+        $data = array();
+        if(!empty($fineList))
+        {
+            foreach ($fineList as $fine)
+              {
+                $action = '';
+                if ($fine['status'] == 0) {
+                    $action .= '<a href="' . base_url('admin/member/payfine/' . $fine["fid"] . '/' . $fine["member_id"]) . '" 
+                    data-fid="'.$fine["fid"].'"
+                    data-member_id="'.$fine["member_id"].'"
+                    data-fine="'.$this->setting[0]['currency_symbol'].$fine['balance'].'"
+                    class="btn btn-default btn-xs payfine" 
+                    data-toggle="tooltip" 
+                    title="Pay Fine">
+                        <i class="fa fa-plus"></i>
+                   </a>';
+                }
+
+                $nestedData['book_no'] = $fine['book_no'];
+                
+                $link = base_url()."admin/member/issue/".$fine["member_id"];
+                $nestedData['member'] = '<a href="'.$link.'" target="_blank" data-toggle="popover" class="detail_popover">'. $fine["member_id"]. '</a>
+                    <div class="fee_detail_popover" style="display: none">';
+                $nestedData['member'] .= '<p class="text text-info">Book issued to library member '.$fine["member_id"].'</p>';
+                $nestedData['member'] .= '</div>';
+
+                $nestedData['issue_date'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fine['issue_date']));
+                $nestedData['return_date'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fine['return_date'])) ;
+                $nestedData['returned_at'] = date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fine['returned_at'])) ;
+
+                $nestedData['days'] = $fine['days'];
+                $nestedData['balance'] = $this->setting[0]['currency_symbol'].$fine['balance'];
+                $nestedData['status'] = ($fine['status'] == 0) ? 'Un-paid' : 'Paid';
+                $nestedData['action'] = "<div class='mailbox-date pull-right'>".$action."</div>";
+
+                $nestedData['row_status'] = ($fine['status'] == 0) ? true : false;
+                $data[] = $nestedData;
+
+              }
+        }
+
+        $json_data = array(
+                    "draw"            => intval($this->input->post('draw')),
+                    "recordsTotal"    => intval($totalData),
+                    "recordsFiltered" => intval($totalFiltered),
+                    "data"            => $data
+                    );
+
+        echo json_encode($json_data);
+
+    }
+
     public function ajax(){
         $config = array();
         $config['reuse_query_string'] = true;
@@ -239,8 +431,8 @@ class Member extends Admin_Controller {
         $memberList = $this->librarymember_model->getByMemberID($id);
         $data['memberList'] = $memberList;
         $issued_books = $this->bookissue_model->getMemberBooks($id);
-        $data['fineList'] = $this->bookissue_model->getMemberFine($id);
         $data['issued_books'] = $issued_books;
+        $data['fineList'] = $this->bookissue_model->getMemberFine($id);
         $bookList = $this->book_model->get();
         $data['bookList'] = $bookList;
 
@@ -336,11 +528,53 @@ class Member extends Admin_Controller {
 
         redirect('admin/member/issue/' . $member_id);
     }
-    public function payfine($fid, $member_id) {
-              
-              //echo '<pre>'; print_r(  $fid); exit;
 
-               $data = array(
+    public function bookreturn_ajax() {
+        $id = $this->input->post('issue_id');
+        $member_id = $this->input->post('member_id');
+        //get book_issues table data by id
+        $book_issue = $this->bookissue_model->get_bookissue_by_id($id);
+        $book_issue_id = $book_issue[0]['id'];
+        $return_date = $book_issue[0]['return_date'];
+        $current_date= date("Y-m-d");
+        if ($current_date > $return_date) {   
+
+            $symbol = $this->setting[0]['currency_symbol'];
+            $a =strtotime(date('Y-m-d'));
+            $time = new DateTime($return_date);
+            $date = $time->format('Y-m-d');
+            $b = strtotime($date);
+            $diff = $a -$b;
+            $days= floor($diff/(60*60*24));
+            $balance=$days*10; // hardcoded 10 rupees fine
+            $this->bookissue_model->add_fine($book_issue_id,$days,$balance);
+            $response['msg'] = 'Member <span style="color:#0084B4">'.$member_id.'</span> have fine '.$symbol.$balance. '.00/ please pay this. Book Returned Successfully';
+            $response['fine'] = true;
+        } else {
+            $response['msg'] = 'Book returned successfully.';
+            $response['fine'] = false;
+        }
+        //get book_issues table data by id
+        $book_issue = $this->bookissue_model->get_book_data_by_bookissue_id($id);
+        $other = $book_issue[0]['other'];
+        //book table update column available
+        $barcode_id = $other;
+        $available = "yes";
+        $this->book_model->update_book_by_id($barcode_id,$available);
+        //book_issues table update
+           $data = array(
+                'id' => $id,
+                'is_returned' => 1,
+                'returned_at' => date("Y-m-d")
+            );
+        $this->bookissue_model->update($data);
+
+        $response['success'] = true;
+        $this->output->set_content_type('application/json')->set_output(json_encode($response));
+    }
+    public function payfine($fid, $member_id) { 
+
+        $data = array(
             'id' => $fid,
             'amount_paid' => 'Yes',
             'status'=> 1
@@ -353,6 +587,28 @@ class Member extends Admin_Controller {
          
 
         redirect('admin/member/issue/' . $member_id);
+    }
+
+    public function payfine_ajax() { 
+        $fid = $this->input->post('fid');
+        $member_id = $this->input->post('member_id');
+        $fine = $this->input->post('fine');
+        $data = array(
+            'id' => $fid,
+            'amount_paid' => 'Yes',
+            'status'=> 1
+        );
+        $check=$this->bookissue_model->update_fine($data);
+
+        $response['msg'] = 'Something went wrong.';
+        $response['fine'] = false;
+
+        if ($check !=""){
+            $response['msg'] = $fine. ' Fine Paid successfully.';
+            $response['fine'] = false;
+        }
+
+        $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
 
     function student() {

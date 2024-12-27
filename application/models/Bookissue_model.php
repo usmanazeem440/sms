@@ -106,7 +106,7 @@ class Bookissue_model extends CI_Model {
 
      */
 
-    public function getMemberBooks($member_id) {
+    public function getMemberBooks($member_id = NULL) {
 
         $this->db->select('book_issues.id,book_issues.return_date,book_issues.issue_date, returned_at,book_issues.is_returned,books.book_title,books.book_no,books.author, book_issues_fine.balance as fine, book_issues_fine.status as fine_status')->from('book_issues');
 
@@ -125,6 +125,111 @@ class Bookissue_model extends CI_Model {
         $query = $this->db->get();
 
         return $query->result_array();
+
+    }
+
+    public function getMemberBooksList($count, $limit = false, $start = false) {
+
+        $this->db->select('book_issues.id, book_issues.member_id, book_issues.return_date,book_issues.issue_date, returned_at,book_issues.is_returned,books.book_title,books.book_no,books.author, book_issues_fine.balance as fine, book_issues_fine.status as fine_status')->from('book_issues');
+
+        $this->db->join('books', 'books.id = book_issues.book_id', 'left');
+        $this->db->join('book_issues_fine', 'book_issues_fine.book_issues_id = book_issues.id', 'left');
+            // $this->db->order_by("book_issues.is_returned", "asc");
+
+        if ($limit) {
+            $this->db->limit($limit,$start);
+        }
+        $this->db->order_by("book_issues.is_returned", "asc");
+        $query = $this->db->get();
+
+        if ($count) {
+            return $query->num_rows();
+        } else {
+            // dd($this->db->last_query());
+            $result = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+            return $result;
+        }
+
+    }
+
+    public function getMemberBooksListSearch($count, $search = '', $limit = false, $start = false) {
+
+        $this->db->select('book_issues.id, book_issues.member_id, book_issues.return_date,book_issues.issue_date, returned_at,book_issues.is_returned,books.book_title,books.book_no,books.author, book_issues_fine.balance as fine, book_issues_fine.status as fine_status')->from('book_issues');
+
+        $this->db->join('books', 'books.id = book_issues.book_id', 'left');
+        $this->db->join('book_issues_fine', 'book_issues_fine.book_issues_id = book_issues.id', 'left');
+            // $this->db->order_by("book_issues.is_returned", "asc");
+
+        $this->db->like('books.book_title',$search)
+            ->or_like('books.book_no',$search)
+            ->or_like('book_issues.member_id',$search);
+
+        if ($limit) {
+            $this->db->limit($limit,$start);
+        }
+        $this->db->order_by("book_issues.is_returned", "asc");
+        $query = $this->db->get();
+
+        if ($count) {
+            return $query->num_rows();
+        } else {
+            // dd($this->db->last_query());
+            $result = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+            return $result;
+        }
+
+    }
+
+    public function getMemberFineList($count, $limit = false, $start = false) {
+
+        $this->db->select('book_issues_fine.id As fid, book_issues_fine.days,book_issues_fine.balance,book_issues_fine.amount_paid,book_issues_fine.status,books.book_no,book_issues.issue_date,book_issues.return_date, book_issues.member_id, book_issues.returned_at')
+        ->from('book_issues_fine')
+
+       ->join('book_issues', 'book_issues.id = book_issues_fine.book_issues_id', 'inner')
+       ->join('books', 'books.id = book_issues.book_id', 'inner');
+
+        if ($limit) {
+            $this->db->limit($limit,$start);
+        }
+        $this->db->order_by("book_issues_fine.status", "asc");
+        $query = $this->db->get();
+
+        if ($count) {
+            return $query->num_rows();
+        } else {
+            // dd($this->db->last_query());
+            $result = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+            return $result;
+        }
+
+    }
+
+    public function getMemberFineListSearch($count, $search = '', $limit = false, $start = false) {
+
+         $this->db->select('book_issues_fine.id As fid, book_issues_fine.days,book_issues_fine.balance,book_issues_fine.amount_paid,book_issues_fine.status,books.book_no,book_issues.issue_date,book_issues.return_date, book_issues.member_id, book_issues.returned_at')
+         ->from('book_issues_fine')
+
+        ->join('book_issues', 'book_issues.id = book_issues_fine.book_issues_id', 'inner')
+        ->join('books', 'books.id = book_issues.book_id', 'inner');
+            // $this->db->order_by("book_issues.is_returned", "asc");
+
+        $this->db->like('books.book_title',$search)
+            ->or_like('books.book_no',$search)
+            ->or_like('book_issues.member_id',$search);
+
+        if ($limit) {
+            $this->db->limit($limit,$start);
+        }
+        $this->db->order_by("book_issues_fine.status", "asc");
+        $query = $this->db->get();
+
+        if ($count) {
+            return $query->num_rows();
+        } else {
+            // dd($this->db->last_query());
+            $result = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+            return $result;
+        }
 
     }
 
@@ -189,7 +294,7 @@ class Bookissue_model extends CI_Model {
         $this->db->insert('book_issues_fine', $data);
         return $this->db->insert_id();
     }
-    public function getMemberFine($member_id) {
+    public function getMemberFine($member_id = NULL) {
 
         $this->db->select('book_issues_fine.id As fid, book_issues_fine.days,book_issues_fine.balance,book_issues_fine.amount_paid,book_issues_fine.status,books.book_no,book_issues.issue_date,book_issues.return_date')
         ->from('book_issues_fine')

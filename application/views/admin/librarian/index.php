@@ -25,7 +25,7 @@
     <section class="content">
 
         <div class="row">  
-            <div class="col-md-12">              
+            <div class="col-md-5 col-sm-12">              
                 <div class="box box-primary" id="tachelist">
                     <div class="box-header ptbnull">
 
@@ -61,6 +61,125 @@
                         </div>
                     </div>
                 </div>
+            </div> 
+            <div class="col-md-7 col-sm-12">              
+                <div class="box box-primary">
+                    <div class="nav-tabs-custom">
+                       <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><i class="fa fa-list"></i> <?php echo $this->lang->line('list'); ?>  <?php echo $this->lang->line('view'); ?></a></li>
+                            <li class=""><a href="#tab_2" class="tab_2" data-toggle="tab" aria-expanded="false"><i class="fa fa-newspaper-o"></i> <?php echo $this->lang->line('fine'); ?> <?php echo $this->lang->line('details'); ?> <?php echo $this->lang->line('view'); ?></a></li>
+                        </ul>   
+                        <div class="box-header ptbnull">
+                            <h3 class="box-title titlefix"><?php echo $this->lang->line('book_issued'); ?></h3>
+                            <div class="alert alert-success text-left" style="display: none;"></div>
+                        </div><!-- /.box-header -->
+                        <!-- form start -->
+
+                        <div class="box-body">                            
+                            <div class="table-responsive mailbox-messages">
+                            <div class="tab-content">    
+                             <div class="download_label"><?php echo $this->lang->line('book_issued'); ?></div>
+                                <div class="tab-pane active table-responsive no-padding" id="tab_1">
+                                <table id="issued-table" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+
+                                            <th><?php echo $this->lang->line('book_title'); ?></th>
+                                            <th><?php echo $this->lang->line('book_no'); ?></th>
+                                            <th><?php echo ('issued'); ?></th>
+                                            <th><?php echo $this->lang->line('issue_date'); ?></th>
+                                            <th><?php echo $this->lang->line('due_date'); ?></th>
+                                            <th><?php echo $this->lang->line('return_date'); ?></th>
+
+                                            <th><?php echo $this->lang->line('status'); ?></th>
+                                            <th><?php echo 'Overdue '. $this->lang->line('days'); ?></th>
+                                            <th><?php echo$this->lang->line('fine'); ?></th>
+                                            <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table><!-- /.table-1 -->
+                             </div>
+                             <div class="tab-pane" id="tab_2">
+                                <table class="table table-striped table-bordered table-hover fine-table">
+                                    <thead>
+                                        <tr>
+
+                                            <th><?php echo $this->lang->line('book_no'); ?></th>
+                                            <th>Member</th>
+                                            <th><?php echo $this->lang->line('issue_date'); ?></th>
+                                            <th><?php echo $this->lang->line('due_date'); ?></th>
+                                            <th><?php echo $this->lang->line('return_date'); ?></th>
+                                            <th><?php echo $this->lang->line('days'); ?></th>
+                                            <th><?php echo $this->lang->line('fine'); ?></th>
+                                            <th><?php echo $this->lang->line('status'); ?></th>
+                                            <th class="text-right"><?php echo $this->lang->line('action'); ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (empty($fineList)) {
+                                            ?>
+
+                                            <?php
+                                        } else {
+                                            $count = 1;
+                                            foreach ($fineList as $fine) {
+                                                ?>
+                                                <tr class="<?= ($fine['status'] == 0) ?  'bg-danger' : 'bg-success' ?>">
+                                                    <td class="mailbox-name">
+                                                        <?php echo $fine['book_no'] ?>
+                                                    </td>
+                                                    <td class="mailbox-name">
+                                                        <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fine['issue_date'])) ?></td>
+                                                    <td class="mailbox-name">
+                                                        <?php echo date($this->customlib->getSchoolDateFormat(), $this->customlib->dateyyyymmddTodateformat($fine['return_date'])) ?></td>
+                                                    <td class="mailbox-name">
+                                                        <?php echo $fine['days'] ?>
+                                                    </td>
+                                                    <td class="mailbox-name">
+                                                        <?php echo $currency_symbol . " " . $fine['balance'] ?>
+                                                    </td>
+                                                    <td class="mailbox-name">
+                                                        <?php if ($fine['status'] == 0) {
+                                                            echo 'Un-paid';
+                                                        } else {
+                                                            echo 'paid';
+                                                        }?>
+                                                    </td>
+                                                    <td class="mailbox-date pull-right">
+                                                      <?php if ($fine['status'] == 0) {
+                                                            ?>
+                                                            <a href="<?php echo base_url(); ?>admin/member/payfine/<?php echo $fine['fid'] . "/" . $memberList->lib_member_id; ?>" class="btn btn-default btn-xs"  data-toggle="tooltip" title="Pay Fine" onclick="return confirm('Are you sure you want to pay fine?')">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+
+                                                            <?php
+                                                        } else {
+                                                            echo 'N/A';
+                                                        }
+                                                        ?>  
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                                $count++;
+                                            }
+                                        }
+                                        ?>
+
+                                    </tbody>
+                                </table><!-- /.table2 -->
+                             </div>   
+
+                            </div>
+                            </div><!-- /.mail-box-messages -->
+
+                        </div><!-- /.box-body -->
+
+                    </div> 
+                </div> 
             </div> 
         </div>
     </section>
@@ -108,5 +227,140 @@
                ]     
 
         });// Datatable Initialize End
+
+
+        var table_2 = $('#issued-table').DataTable({
+            "rowCallback": function( row, data ) {
+                if (data.row_status == true) {
+                    $( row).addClass('bg-danger');
+                }
+            },
+             "serverSide": true,
+             "pagingType": 'first_last_numbers',
+             //"stateSave": true,
+             "paging": true,
+             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+             "order": [[ 0, "desc" ]],
+             // "dom": '<"top"f>rt<"main"<"bottom main-info"i><"main-lenght"l><"main-pagination"p>><"clear">',
+             "pageLength": 25,   
+             "ordering"   :false,
+             "processing": true,
+             "ajax":{
+              "url": base_url +"admin/member/getIssuedList",
+              "dataType": "json",
+              "type": "POST",
+                            },
+         "columns": [
+                   { "data": "book_title" },
+                   { "data": "book_no" },
+                   { "data": "issued" },
+                   { "data": "issue_date" },
+                   { "data": "return_date" },
+                   { "data": "returned_at" },
+                   { "data": "status" },
+                   { "data": "overdue_days" },
+                   { "data": "fine" },
+                   { "data": "action" },
+                ]     
+
+        });// Datatable Initialize End
+
+        var table_3 = $('.fine-table').DataTable({
+            "rowCallback": function( row, data ) {
+                if (data.row_status == true) {
+                    $( row).addClass('bg-danger');
+                }
+            },
+             "serverSide": true,
+             "pagingType": 'first_last_numbers',
+             //"stateSave": true,
+             "paging": true,
+             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+             "order": [[ 0, "desc" ]],
+             // "dom": '<"top"f>rt<"main"<"bottom main-info"i><"main-lenght"l><"main-pagination"p>><"clear">',
+             "pageLength": 25,   
+             "ordering"   :false,
+             "processing": true,
+             "ajax":{
+              "url": base_url +"admin/member/getFineList",
+              "dataType": "json",
+              "type": "POST",
+                            },
+         "columns": [
+                   { "data": "book_no" },
+                   { "data": "member" },
+                   { "data": "issue_date" },
+                   { "data": "return_date" },
+                   { "data": "returned_at" },
+                   { "data": "days" },
+                   { "data": "balance" },
+                   { "data": "status" },
+                   { "data": "action" },
+                ]     
+
+        });// Datatable Initialize End
+
+        $(document).on('click', '.return', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to return this book?')) {
+                var issue_id = $(this).data('issue_id');
+                var member_id = $(this).data('member_id');
+
+                $.ajax({
+                    url: base_url +"admin/member/bookreturn_ajax",
+                    type: "POST",
+                    data: {issue_id: issue_id, member_id: member_id},        
+                    success: function(data) {
+                        if (data.success) {
+                            $('.alert').html(data.msg);
+                            $('.alert').addClass('alert-success').removeClass('alert-danger');
+                            if(data.fine) {
+                                $('.alert').addClass('alert-danger').removeClass('alert-success');
+                            }
+                            $('.alert').show();
+                            table_2.ajax.reload();
+                            table_3.ajax.reload();
+
+                            setTimeout(() => {
+                                $('.alert').hide();
+                            }, 20000);
+                        }
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '.payfine', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to pay fine?')) {
+                var fid = $(this).data('fid');
+                var member_id = $(this).data('member_id');
+                var fine = $(this).data('fine');
+
+                $.ajax({
+                    url: base_url +"admin/member/payfine_ajax",
+                    type: "POST",
+                    data: {fid: fid, member_id: member_id, fine: fine},        
+                    success: function(data) {
+                        if (data.success) {
+                            $('.alert').html(data.msg);
+                            $('.alert').addClass('alert-success').removeClass('alert-danger');
+
+                        } else {
+                            $('.alert').html(data.msg);
+                            $('.alert').addClass('alert-danger').removeClass('alert-success');
+                        }
+
+                        $('.alert').show();
+                        // table_2.ajax.reload();
+                        table_3.ajax.reload();
+
+                        setTimeout(() => {
+                            $('.alert').hide();
+                        }, 20000);
+                    }
+                })
+            }
+        })
     });
 </script>
