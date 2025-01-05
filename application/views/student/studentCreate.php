@@ -1137,6 +1137,7 @@
                     $('#guardian_relation').val(data.guardian_relation);
                     $('#guardian_address').val(data.guardian_address);
                     $('#guardian_phone').val(data.guardian_phone);
+                    $('#guardian_id').val(data.guardian_id);
                     $('#state').val(data.state);
                     $('#city').val(data.city);
                     $('#pincode').val(data.pincode);
