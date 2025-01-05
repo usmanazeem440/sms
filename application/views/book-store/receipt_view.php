@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-xs-8 text-left">
                         <b><span style="font-size:16px;"><?php echo $this->setting_model->getCurrentSchoolName() ?></span></b><br/>
-                        <span>Dakhna Road, Al Rehab District 21412 Jeddah, Makkah, KSA</span><br/>
+                        <span>Madina Chok Badami bagh, Lahore</span><br/>
                         <span>Tel: 012-6738670</span><br/>
                         <b>VAT No: 310150218500003</b>
                     </div>
