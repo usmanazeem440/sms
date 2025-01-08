@@ -275,4 +275,9 @@ class Librarymember_model extends CI_Model {
         return true;
     }
 
+    public function get_fine_amount(){
+        $fine = $this->db->get('book_issues_fine_setup')->row()->fine;
+        return $fine;
+    }
+
 }

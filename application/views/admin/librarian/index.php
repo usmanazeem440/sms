@@ -1,3 +1,6 @@
+<?php
+$currency_symbol = $this->customlib->getSchoolCurrencyFormat();
+?>
 <style type="text/css">
     @media print
     {
@@ -17,9 +20,17 @@
     }
 </style>
 <div class="content-wrapper" style="min-height: 946px;">  
-    <section class="content-header">
+    <section class="content-header" style="display: flex; justify-content: space-between;">
         <h1>
-            <i class="fa fa-book"></i> <?php echo $this->lang->line('library'); ?> </h1>
+            <i class="fa fa-book"></i> <?php echo $this->lang->line('library'); ?></h1> 
+            <div>
+              <code style="font-size: 15px;" >Fine Per Day = <?= $currency_symbol ?><span class="fine_text"><?= $fine_amount?></span></code>
+              <i class="fa fa-edit edit-fine" 
+
+                data-toggle="modal" data-target="#fine_amount_modal"
+                data-fine_amount = "<?= $fine_amount; ?>"
+              style=" font-size:16px; color: #112954; cursor: pointer;" data-toggle="tooltip" data-placement="top" title="Edit Fine"></i>
+            </div>
     </section>
     <!-- Main content -->
     <section class="content">
@@ -184,9 +195,79 @@
         </div>
     </section>
 </div>
+
+<div class="modal fade" id="fine_amount_modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title title text-center"> Update Fine Amount</h4>
+            </div>
+            <div class="modal-body pb0">
+                <div class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">Fine Amount </label><small class="req">*</small>
+                            <div class="col-sm-9">
+
+                                <input type="text" class="form-control twodecimel" id="fine" >
+
+                                <span class="text-danger" id="fine_error"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="box-body">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal"><?php echo $this->lang->line('cancel'); ?></button>
+                    <button type="button" class="btn cfees update_fine" id="load" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"> <?php echo $this->lang->line('save'); ?></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 <script type="text/javascript">
     
     $(document).ready(function () {
+
+        $("#fine_amount_modal").on('shown.bs.modal', function (e) {
+            var fine_amount = $('.edit-fine').data('fine_amount');
+            $('#fine').val(fine_amount);
+        })
+
+        $(document).on('click', '.update_fine', function (e) {
+            var $this = $(this);
+
+            var fine = $('#fine').val();
+            if (parseFloat(fine) == 0 || fine == '') {
+                alert('Please add fine amount');
+                $('#fine').addClass('has-error');
+                return false;
+            } else {
+                $('#fine').removeClass('has-error');
+            }
+            // if(confirm('Are you sure you want to update fine?')) {
+                $this.button('loading');
+                $.ajax({
+                    url: '<?php echo site_url("admin/member/updatefine") ?>',
+                    type: 'post',
+                    data: {
+                        fine: fine,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        $this.button('reset');
+                        if (response.status == "success") {
+                            alert('fine updated successfully');
+                            $('.fine_text').text(fine);
+                            $("#fine_amount_modal").modal('hide');
+                        }
+                    }
+                });
+            // }
+        });
 
         // Datatable Initialize End
          var table = $('#members').DataTable({

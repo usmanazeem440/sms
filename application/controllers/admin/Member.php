@@ -97,6 +97,9 @@ class Member extends Admin_Controller {
         $data['title'] = 'Member';
         $data['title_list'] = 'Members';
 
+        $data['fine_amount'] = $this->librarymember_model->get_fine_amount();
+        // dd($fine_amount);
+
         $this->load->view('layout/header');
         $this->load->view('admin/librarian/index', $data);
         $this->load->view('layout/footer');
@@ -503,7 +506,9 @@ class Member extends Admin_Controller {
             $b = strtotime($date);
             $diff = $a -$b;
             $days= floor($diff/(60*60*24));
-            $balance=$days*10; // hardcoded 10 rupees fine
+            $fine_amount_per_day = $this->librarymember_model->get_fine_amount();
+            $balance= $days * $fine_amount_per_day; 
+            // dd($balance);
             $this->bookissue_model->add_fine($book_issue_id,$days,$balance);
             $this->session->set_flashdata('msg', '<div class="alert alert-danger text-left">You have fine '.$symbol.$balance. '.00/ please pay this. Book Returned Successfully</div>');
          }
@@ -546,7 +551,8 @@ class Member extends Admin_Controller {
             $b = strtotime($date);
             $diff = $a -$b;
             $days= floor($diff/(60*60*24));
-            $balance=$days*10; // hardcoded 10 rupees fine
+            $fine_amount_per_day = $this->librarymember_model->get_fine_amount();
+            $balance= $days * $fine_amount_per_day;
             $this->bookissue_model->add_fine($book_issue_id,$days,$balance);
             $response['msg'] = 'Member <span style="color:#0084B4">'.$member_id.'</span> have fine '.$symbol.$balance. '.00/ please pay this. Book Returned Successfully';
             $response['fine'] = true;
@@ -772,6 +778,16 @@ class Member extends Admin_Controller {
             $array = array('status' => 'success', 'error' => '', 'message' => 'Membership surrender successfully');
             echo json_encode($array);
         }
+    }
+
+    public function updatefine(){
+        $fine = $this->input->post('fine');
+        // $this->librarymember_model->surrender($member_id);
+        $this->db->where('id',1);
+        $this->db->update('book_issues_fine_setup',array('fine' => $fine));
+        // dd($this->db->last_query());
+        $array = array('status' => 'success', 'error' => '', 'message' => 'Fine amount updated successfully');
+        echo json_encode($array);
     }
 
 }
